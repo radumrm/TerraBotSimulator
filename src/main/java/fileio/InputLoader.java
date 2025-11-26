@@ -26,6 +26,15 @@ public final class InputLoader {
         this.simulations = new ArrayList<>(root.simulationParams);
         this.commands = new ArrayList<>(root.commands);
     }
+    // Method for Simulation ArrayList
+    public ArrayList<SimulationInput> getSimulations() {
+        return simulations;
+    }
+
+    // Method for Commands ArrayList
+    public ArrayList<CommandInput> getCommands() {
+        return commands;
+    }
 
     // Helper class for root deserialization
     @Data
