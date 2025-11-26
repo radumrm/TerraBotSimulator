@@ -3,6 +3,7 @@ package map;
 import fileio.*;
 import entities.Entity;
 import entities.CreateEntity;
+import entities.animals.*;
 import lombok.Getter;
 
 public class SimulationMap {

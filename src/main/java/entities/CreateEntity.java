@@ -1,5 +1,6 @@
 package entities;
 
+import entities.animals.*;
 import entities.environment.Water;
 import entities.environment.air.*;
 import entities.environment.soil.*;
@@ -38,6 +39,13 @@ public class CreateEntity {
     }
 
     public static Animal createAnimal(AnimalInput input) {
-        return new Animal(input);
+        return switch (input.getType()) {
+            case "Herbivores" -> new Herbivores(input);
+            case "Carnivores" -> new Carnivores(input);
+            case "Omnivores" -> new Omnivores(input);
+            case "Detritivores" -> new Detritivores(input);
+            case "Parasites" -> new Parasites(input);
+            default -> null;
+        };
     }
 }

@@ -1,0 +1,14 @@
+package entities.animals;
+
+import fileio.AnimalInput;
+
+public class Parasites extends Animal {
+    protected static double animal_possibility_to_attack = 10;
+    public Parasites(AnimalInput input) {
+        super(input);
+    }
+    @Override
+    public double getAnimal_possibility_to_attack() {
+        return animal_possibility_to_attack;
+    }
+}
