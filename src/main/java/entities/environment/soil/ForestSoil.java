@@ -22,4 +22,9 @@ public class ForestSoil extends Soil {
     public void addSpecificFieldsToNode(ObjectNode objectNode) {
         objectNode.put("leafLitter", this.leafLitter);
     }
+
+    @Override
+    public double PossibilityToGetStuckInSoil() {
+        return (waterRetention * 0.6 + leafLitter * 0.4) / 80 * 100;
+    }
 }

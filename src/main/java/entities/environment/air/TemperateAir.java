@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
 
+@Getter
 public class TemperateAir extends Air {
-    @Getter private double pollenLevel;
+    private double pollenLevel;
     public TemperateAir(AirInput air) {
         super(air);
         this.pollenLevel = air.getPollenLevel();
@@ -18,6 +19,11 @@ public class TemperateAir extends Air {
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
         objectNode.put("pollenLevel", this.pollenLevel);
+    }
+    protected static double maxScore = 84;
+    @Override
+    public double getMaxScore() {
+        return maxScore;
     }
 }
 

@@ -22,4 +22,9 @@ public class DesertSoil extends Soil {
     public void addSpecificFieldsToNode(ObjectNode objectNode) {
         objectNode.put("salinity", this.salinity);
     }
+
+    @Override
+    public double PossibilityToGetStuckInSoil() {
+        return (100 - waterRetention + salinity) / 100 * 100;
+    }
 }

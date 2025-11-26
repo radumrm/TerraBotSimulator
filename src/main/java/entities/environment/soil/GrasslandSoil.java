@@ -22,4 +22,9 @@ public class GrasslandSoil extends Soil {
     public void addSpecificFieldsToNode(ObjectNode objectNode) {
         objectNode.put("rootDensity", this.rootDensity);
     }
+
+    @Override
+    public double PossibilityToGetStuckInSoil() {
+        return ((50 - rootDensity) + waterRetention * 0.5) / 75 * 100;
+    }
 }

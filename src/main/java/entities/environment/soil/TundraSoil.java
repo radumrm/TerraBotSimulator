@@ -22,4 +22,10 @@ public class TundraSoil extends Soil {
     public void addSpecificFieldsToNode(ObjectNode objectNode) {
         objectNode.put("permafrostDepth", this.permafrostDepth);
     }
+
+
+    @Override
+    public double PossibilityToGetStuckInSoil() {
+        return (50 - permafrostDepth) / 50 * 100;
+    }
 }

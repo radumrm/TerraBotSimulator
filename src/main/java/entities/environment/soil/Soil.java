@@ -22,5 +22,7 @@ public abstract class Soil extends Entity {
 
     public abstract double getSoilQuality();
 
+    public abstract double PossibilityToGetStuckInSoil();
+
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
 }

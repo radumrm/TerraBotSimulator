@@ -19,5 +19,12 @@ public abstract class Air extends Entity {
 
     public abstract double getAirQuality();
 
+    public abstract double getMaxScore();
+
+    public double getToxicityAQ() {
+        double toxicityAQ = 100 * (1 - getAirQuality() /  getMaxScore());
+        return Math.round((100 * (1 - getAirQuality() / getMaxScore())) * 100.0) / 100.0;
+    }
+
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
 }

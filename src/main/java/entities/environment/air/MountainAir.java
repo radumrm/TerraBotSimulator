@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
 
+@Getter
 public class MountainAir extends Air {
-    @Getter private double altitude;
+    private double altitude;
     public MountainAir(AirInput air) {
         super(air);
         this.altitude = air.getAltitude();
@@ -19,5 +20,9 @@ public class MountainAir extends Air {
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
         objectNode.put("altitude", this.altitude);
     }
-
+    protected static double maxScore = 78;
+    @Override
+    public double getMaxScore() {
+        return maxScore;
+    }
 }

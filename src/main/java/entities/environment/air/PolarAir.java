@@ -3,10 +3,10 @@ package entities.environment.air;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
-import main.Main;
 
+@Getter
 public class PolarAir extends Air {
-    @Getter private double iceCrystalConcentration;
+    private double iceCrystalConcentration;
     public PolarAir(AirInput air) {
         super(air);
         this.iceCrystalConcentration = air.getIceCrystalConcentration();
@@ -19,5 +19,10 @@ public class PolarAir extends Air {
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
         objectNode.put("iceCrystalConcentration", this.iceCrystalConcentration);
+    }
+    protected static double maxScore = 142;
+    @Override
+    public double getMaxScore() {
+        return maxScore;
     }
 }

@@ -16,4 +16,20 @@ public class Box {
     private Water water;
     private Plant plant;
     private Animal animal;
+
+    public int getCost() {
+        double sum = 0.0;
+        double count = 2.0;
+        sum += soil.PossibilityToGetStuckInSoil() + air.getToxicityAQ();
+        if (animal != null) {
+            sum += animal.PossibilityToBeAttackedByAnimal();
+            count++;
+        }
+        if (plant != null) {
+            sum += plant.PossibiltyToGetStuckInPlants();
+            count++;
+        }
+        double mean = Math.abs(sum / count);
+        return (int) Math.round(mean);
+    }
 }

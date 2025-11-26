@@ -38,7 +38,7 @@ public class CreateEntity {
     public static Plant createPlant(PlantInput input) {
         return switch (input.getType()) {
             case "FloweringPlants" -> new FloweringPlants(input);
-            case "Gymnosperms" -> new Gymnosperms(input);
+            case "GymnospermsPlants" -> new GymnospermsPlants(input);
             case "Ferns" -> new Ferns(input);
             case "Mosses" -> new Mosses(input);
             case "Algae" -> new Algae(input);

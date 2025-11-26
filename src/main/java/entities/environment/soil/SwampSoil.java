@@ -22,4 +22,9 @@ public class SwampSoil extends Soil {
     public void addSpecificFieldsToNode(ObjectNode objectNode) {
         objectNode.put("waterLogging", this.waterLogging);
     }
+
+    @Override
+    public double PossibilityToGetStuckInSoil() {
+        return waterLogging * 10;
+    }
 }

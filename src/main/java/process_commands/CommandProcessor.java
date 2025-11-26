@@ -34,6 +34,7 @@ public class CommandProcessor {
             case "endSimulation" -> endSimulation(command);
             case "printEnvConditions" -> printEnvConditions(command);
             case "printMap" -> printMap(command);
+            case "moveRobot" -> moveRobot(command);
             default -> null;
         };
     }
@@ -194,4 +195,46 @@ public class CommandProcessor {
         return objectNode;
     }
 
+    private ObjectNode moveRobot(String command) {
+        if (!simulationStarted) {
+            return createNode(command, "ERROR: Simulation not started. Cannot perform action");
+        }
+        int x = this.terraBot.getX();
+        int y = this.terraBot.getY();
+        int height = simulationMap.getHeight();
+        int width = simulationMap.getWidth();
+
+        // Up Right Down Left
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+        int newX = -1;
+        int newY = -1;
+        int bestScore = Integer.MAX_VALUE;
+
+        for (int[] direction : directions) {
+            int auxX = x + direction[0];
+            int auxY = y + direction[1];
+
+            if (auxX >= 0 && auxX < width && auxY >= 0 && auxY < height) {
+                Box auxBox = simulationMap.getBox(auxX, auxY);
+                int score = auxBox.getCost();
+                if (score < bestScore) {
+                    bestScore = score;
+                    newX = auxX;
+                    newY = auxY;
+                }
+            }
+        }
+        if (newX != -1) {
+            if (terraBot.getEnergy() >= bestScore) {
+                terraBot.setEnergy(terraBot.getEnergy() - bestScore);
+                terraBot.setX(newX);
+                terraBot.setY(newY);
+                return createNode(command, "The robot has successfully moved to position (" + newX + ", " + newY + ").");
+            } else {
+                return createNode(command, "ERROR: Not enough battery left. Cannot perform action");
+            }
+        }
+        return null;
+    }
 }
