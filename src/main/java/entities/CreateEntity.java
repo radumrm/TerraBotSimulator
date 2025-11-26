@@ -4,6 +4,7 @@ import entities.animals.*;
 import entities.environment.Water;
 import entities.environment.air.*;
 import entities.environment.soil.*;
+import entities.plants.*;
 import fileio.*;
 
 public class CreateEntity {
@@ -35,7 +36,14 @@ public class CreateEntity {
     }
 
     public static Plant createPlant(PlantInput input) {
-        return new Plant(input);
+        return switch (input.getType()) {
+            case "FloweringPlants" -> new FloweringPlants(input);
+            case "Gymnosperms" -> new Gymnosperms(input);
+            case "Ferns" -> new Ferns(input);
+            case "Mosses" -> new Mosses(input);
+            case "Algae" -> new Algae(input);
+            default -> null;
+        };
     }
 
     public static Animal createAnimal(AnimalInput input) {

@@ -1,7 +1,5 @@
 package entities.animals;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import entities.Entity;
 import fileio.AnimalInput;
 import lombok.Getter;
@@ -14,18 +12,15 @@ public abstract class Animal extends Entity {
         SICK
     }
 
-    @JsonIgnore
     protected State state;
 
     public Animal(AnimalInput animalInput) {
         super(animalInput.getName(), animalInput.getMass(), animalInput.getType());
     }
 
-    @JsonIgnore
     public abstract double getAnimal_possibility_to_attack();
 
-    @JsonIgnore
-    public double getAttack_probability () {
+    public double PossibilityToBeAttackedByAnimal() {
         return (100 - this.getAnimal_possibility_to_attack()) / 10.0;
     }
 

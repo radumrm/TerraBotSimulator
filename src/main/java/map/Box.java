@@ -1,6 +1,6 @@
 package map;
 
-import entities.Plant;
+import entities.plants.Plant;
 import entities.animals.Animal;
 import entities.environment.Water;
 import entities.environment.air.Air;

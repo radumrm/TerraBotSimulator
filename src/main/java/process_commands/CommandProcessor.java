@@ -3,7 +3,7 @@ package process_commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import entities.Plant;
+import entities.plants.Plant;
 import entities.animals.Animal;
 import entities.environment.Water;
 import entities.environment.air.Air;
