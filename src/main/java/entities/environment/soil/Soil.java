@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import entities.Entity;
 import fileio.SoilInput;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public abstract class Soil extends Entity {
     protected double nitrogen;
     protected double waterRetention;

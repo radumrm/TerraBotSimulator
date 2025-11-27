@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import entities.Entity;
 import fileio.AirInput;
 import lombok.Getter;
+import lombok.Setter;
 import main.Main;
 
 @Getter
+@Setter
 public abstract class Air extends Entity {
     protected double humidity;
     protected double temperature;

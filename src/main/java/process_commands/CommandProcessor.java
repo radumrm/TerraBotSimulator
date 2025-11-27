@@ -380,13 +380,31 @@ public class CommandProcessor {
         if (!simulationStarted)
             return;
         for (Entity entity : terraBot.getInventory()) {
-            Box box = simulationMap.getBox(entity.getX(), entity.getY());
-
             if (entity instanceof Plant) {
+                Box box = simulationMap.getBox(entity.getX(), entity.getY());
                 Plant plant =  (Plant) entity;
-                plant.grow();
+                 plant.grow();
                 if (!plant.isDead()) {
                     box.getAir().addOxygenLevel(plant.oxygenLevel());
+                }
+            }
+        }
+        for (Entity entity : terraBot.getInventory()) {
+            if (entity instanceof Water) {
+                Water water = (Water) entity;
+                Box box = simulationMap.getBox(entity.getX(), entity.getY());
+                int age = Main.timestamp - water.getScannedTimestamp();
+                if (box.getPlant() != null && box.getWater().isScanned()) {
+                    box.getPlant().grow();
+                }
+                if (age % 2 == 0) {
+                    Air air = box.getAir();
+                    double newHumidity = air.getHumidity() + 0.1;
+                    air.setHumidity(Math.round(newHumidity * 100.0) / 100.0);
+
+                    Soil soil = box.getSoil();
+                    double newWaterRetention = soil.getWaterRetention() + 0.1;
+                    soil.setWaterRetention(Math.round(newWaterRetention * 100.0) / 100.0);
                 }
             }
         }
