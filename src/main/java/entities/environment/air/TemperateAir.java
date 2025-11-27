@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class TemperateAir extends Air {
     private double pollenLevel;
+    private String season = "";
     public TemperateAir(AirInput air) {
         super(air);
         this.pollenLevel = air.getPollenLevel();
@@ -14,7 +15,12 @@ public class TemperateAir extends Air {
     @Override
     public double getAirQuality() {
         double airQuality = (oxygenLevel * 2) + (humidity * 0.7) - (pollenLevel * 0.1);
-        return NormalizedAndRounded(airQuality);
+        double normAirQuality = NormalizedAndRounded(airQuality);
+        if (isWeatherChanged()) {
+            double seasonPenalty = season.equalsIgnoreCase("Spring") ? 15 : 0;
+            return normAirQuality - seasonPenalty;
+        }
+        return normAirQuality;
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
@@ -24,6 +30,10 @@ public class TemperateAir extends Air {
     @Override
     public double getMaxScore() {
         return maxScore;
+    }
+    public void setSeason(String season) {
+        this.season = season;
+        changeWeather();
     }
 }
 

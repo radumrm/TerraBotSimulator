@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class TropicalAir extends Air {
     private double co2Level;
+    private double rainfall = 0;
     public TropicalAir(AirInput air) {
         super(air);
         this.co2Level = air.getCo2Level();
@@ -14,7 +15,11 @@ public class TropicalAir extends Air {
     @Override
     public double getAirQuality() {
         double airQuality = (oxygenLevel * 2) + (humidity * 0.5) - (co2Level * 0.01);
-        return NormalizedAndRounded(airQuality);
+        double normAirQuality = NormalizedAndRounded(airQuality);
+        if (isWeatherChanged()) {
+            return normAirQuality + rainfall * 0.3;
+        }
+        return normAirQuality;
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
@@ -24,5 +29,9 @@ public class TropicalAir extends Air {
     @Override
     public double getMaxScore() {
         return maxScore;
+    }
+    public void setRainfall(double rainfall) {
+        this.rainfall = rainfall;
+        changeWeather();
     }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class PolarAir extends Air {
     private double iceCrystalConcentration;
+    private double windSpeed = 0;
     public PolarAir(AirInput air) {
         super(air);
         this.iceCrystalConcentration = air.getIceCrystalConcentration();
@@ -14,7 +15,11 @@ public class PolarAir extends Air {
     @Override
     public double getAirQuality() {
         double airQuality = (oxygenLevel * 2) + (100 - Math.abs(temperature)) - (iceCrystalConcentration * 0.05);
-        return NormalizedAndRounded(airQuality);
+        double normAirQuality = NormalizedAndRounded(airQuality);
+        if (isWeatherChanged()) {
+            return normAirQuality - windSpeed * 0.2;
+        }
+        return normAirQuality;
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
@@ -24,5 +29,9 @@ public class PolarAir extends Air {
     @Override
     public double getMaxScore() {
         return maxScore;
+    }
+    public void setWindSpeed(double windSpeed) {
+        this.windSpeed = windSpeed;
+        changeWeather();
     }
 }

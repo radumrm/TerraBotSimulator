@@ -3,6 +3,7 @@ package process_commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import entities.environment.air.*;
 import entities.plants.Plant;
 import entities.animals.Animal;
 import entities.environment.Water;
@@ -35,6 +36,9 @@ public class CommandProcessor {
             case "printEnvConditions" -> printEnvConditions(command);
             case "printMap" -> printMap(command);
             case "moveRobot" -> moveRobot(command);
+            case "getEnergyStatus" -> getEnergyStatus(command);
+            case "rechargeBattery" -> rechargeBattery(commandInput);
+            case "changeWeatherConditions" -> changeWeatherConditions(commandInput);
             default -> null;
         };
     }
@@ -49,9 +53,9 @@ public class CommandProcessor {
 
     private ObjectNode createSoilNode(Soil soil) {
         ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("type", soil.getType());
         objectNode.put("name", soil.getName());
         objectNode.put("mass", soil.getMass());
-        objectNode.put("type", soil.getType());
         objectNode.put("nitrogen", soil.getNitrogen());
         objectNode.put("waterRetention", soil.getWaterRetention());
         objectNode.put("soilpH", soil.getSoilpH());
@@ -63,9 +67,9 @@ public class CommandProcessor {
 
     private ObjectNode createAirNode(Air air) {
         ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("type", air.getType());
         objectNode.put("name", air.getName());
         objectNode.put("mass", air.getMass());
-        objectNode.put("type", air.getType());
         objectNode.put("humidity", air.getHumidity());
         objectNode.put("temperature", air.getTemperature());
         objectNode.put("oxygenLevel", air.getOxygenLevel());
@@ -76,26 +80,36 @@ public class CommandProcessor {
 
     private ObjectNode createPlantNode(Plant plant) {
         ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("type", plant.getType());
         objectNode.put("name", plant.getName());
         objectNode.put("mass", plant.getMass());
-        objectNode.put("type", plant.getType());
         return  objectNode;
     }
 
     private ObjectNode createWaterNode(Water water) {
         ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("type", water.getType());
         objectNode.put("name", water.getName());
         objectNode.put("mass", water.getMass());
-        objectNode.put("type", water.getType());
         return  objectNode;
     }
 
     private ObjectNode createAnimalNode(Animal animal) {
         ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("type", animal.getType());
         objectNode.put("name", animal.getName());
         objectNode.put("mass", animal.getMass());
-        objectNode.put("type", animal.getType());
         return  objectNode;
+    }
+
+    private ObjectNode checkStartAndCharge(String command) {
+        if (!simulationStarted) {
+            return createNode(command, "ERROR: Simulation not started. Cannot perform action");
+        }
+        if (terraBot.isCharging(Main.timestamp)) {
+            return createNode(command, "ERROR: Robot still charging. Cannot perform action");
+        }
+        return null;
     }
 
     private String getQualityAsString(double quality) {
@@ -123,8 +137,9 @@ public class CommandProcessor {
     }
 
     private ObjectNode printEnvConditions(String command) {
-        if (!simulationStarted) {
-            return createNode(command, "ERROR: Simulation not started. Cannot perform action");
+        ObjectNode error = checkStartAndCharge(command);
+        if (error != null) {
+            return error;
         }
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("command", command);
@@ -155,8 +170,9 @@ public class CommandProcessor {
     }
 
     private ObjectNode printMap(String command) {
-        if (!simulationStarted) {
-            return createNode(command, "ERROR: Simulation not started. Cannot perform action");
+        ObjectNode error = checkStartAndCharge(command);
+        if (error != null) {
+            return error;
         }
 
         ObjectNode objectNode = mapper.createObjectNode();
@@ -175,9 +191,12 @@ public class CommandProcessor {
                 boxNode.set("section", sectionNode);
 
                 int count = 0;
-                if (box.getPlant() != null) count++;
-                if (box.getAnimal() != null) count++;
-                if (box.getWater() != null) count++;
+                if (box.getPlant() != null)
+                    count++;
+                if (box.getAnimal() != null)
+                    count++;
+                if (box.getWater() != null)
+                    count++;
                 boxNode.put("totalNrOfObjects", count);
 
                 double airQ = box.getAir().getAirQuality();
@@ -196,8 +215,9 @@ public class CommandProcessor {
     }
 
     private ObjectNode moveRobot(String command) {
-        if (!simulationStarted) {
-            return createNode(command, "ERROR: Simulation not started. Cannot perform action");
+        ObjectNode error = checkStartAndCharge(command);
+        if (error != null) {
+            return error;
         }
         int x = this.terraBot.getX();
         int y = this.terraBot.getY();
@@ -236,5 +256,77 @@ public class CommandProcessor {
             }
         }
         return null;
+    }
+
+    private ObjectNode getEnergyStatus(String command) {
+        ObjectNode error = checkStartAndCharge(command);
+        if (error != null) {
+            return error;
+        }
+        return  createNode(command, "TerraBot has " + terraBot.getEnergy() +" energy points left.");
+    }
+
+    private ObjectNode rechargeBattery(CommandInput commandInput) {
+        ObjectNode error = checkStartAndCharge(commandInput.getCommand());
+        if (error != null) {
+            return error;
+        }
+        terraBot.recharge(commandInput.getTimeToCharge(), Main.timestamp);
+        return createNode(commandInput.getCommand(), "Robot battery is charging.");
+    }
+
+    private ObjectNode changeWeatherConditions(CommandInput commandInput) {
+        ObjectNode error = checkStartAndCharge(commandInput.getCommand());
+        if (error != null) {
+            return error;
+        }
+
+        String type = commandInput.getType();
+        boolean typeFound = false;
+        for (int y = 0; y < simulationMap.getHeight(); y++) {
+            for (int x = 0; x < simulationMap.getWidth(); x++) {
+                Air air =  simulationMap.getBox(x, y).getAir();
+                switch (type) {
+                    case "desertStorm":
+                        if (air instanceof DesertAir) {
+                            ((DesertAir) air).setDesertStorm();
+                            typeFound = true;
+                        }
+                        break;
+
+                        case "rainfall":
+                        if (air instanceof TropicalAir) {
+                            ((TropicalAir) air).setRainfall(commandInput.getRainfall());
+                            typeFound = true;
+                        }
+                        break;
+
+                        case "peopleHiking":
+                        if (air instanceof MountainAir) {
+                            ((MountainAir) air).setNumberOfHikers(commandInput.getNumberOfHikers());
+                            typeFound = true;
+                        }
+                        break;
+
+                        case "polarStorm":
+                        if (air instanceof PolarAir) {
+                            ((PolarAir) air).setWindSpeed(commandInput.getWindSpeed());
+                            typeFound = true;
+                        }
+                        break;
+
+                        case "newSeason":
+                        if (air instanceof TemperateAir) {
+                            ((TemperateAir) air).setSeason(commandInput.getSeason());
+                            typeFound = true;
+                        }
+                        break;
+                }
+            }
+        }
+        if (typeFound) {
+            return createNode(commandInput.getCommand(), "The weather has changed.");
+        }
+        return createNode(commandInput.getCommand(), "ERROR: The weather change does not affect the environment. Cannot perform action");
     }
 }

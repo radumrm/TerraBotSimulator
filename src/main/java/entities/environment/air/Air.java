@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import entities.Entity;
 import fileio.AirInput;
 import lombok.Getter;
+import main.Main;
 
 @Getter
 public abstract class Air extends Entity {
@@ -27,4 +28,13 @@ public abstract class Air extends Entity {
     }
 
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
+
+    protected int startChangeWeatherTimestamp = -2;
+    public void changeWeather() {
+        startChangeWeatherTimestamp = Main.timestamp;
+    }
+
+    public boolean isWeatherChanged() {
+        return (Main.timestamp - startChangeWeatherTimestamp) < 2;
+    }
 }

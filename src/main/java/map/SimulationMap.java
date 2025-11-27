@@ -6,18 +6,19 @@ import entities.CreateEntity;
 import entities.animals.*;
 import lombok.Getter;
 
+@Getter
 public class SimulationMap {
     private Box[][] map;
-    @Getter private int height;
-    @Getter private int width;
+    private int height;
+    private int width;
 
     public SimulationMap(String dimensions) {
         String[] dimensionsArray = dimensions.split("x");
         height = Integer.parseInt(dimensionsArray[0]);
         width = Integer.parseInt(dimensionsArray[1]);
         map = new Box[height][width];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 map[i][j] = new Box();
             }
         }

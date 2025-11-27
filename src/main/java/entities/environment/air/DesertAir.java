@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class DesertAir extends Air {
     private double dustParticles;
+
     public DesertAir(AirInput air) {
         super(air);
         this.dustParticles = air.getDustParticles();
@@ -14,15 +15,22 @@ public class DesertAir extends Air {
     @Override
     public double getAirQuality() {
         double airQuality = (oxygenLevel * 2) - (dustParticles * 0.2) - (temperature * 0.3);
-        return NormalizedAndRounded(airQuality);
+        double normAirQuality = NormalizedAndRounded(airQuality);
+        if (isWeatherChanged()) {
+            return normAirQuality - 30;
+        }
+        return normAirQuality;
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
-        objectNode.put("dustParticles", dustParticles);
+        objectNode.put("desertStorm", isWeatherChanged());
     }
     protected static double maxScore = 65;
     @Override
     public double getMaxScore() {
         return maxScore;
+    }
+    public void setDesertStorm() {
+        changeWeather();
     }
 }
