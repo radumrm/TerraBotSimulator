@@ -60,6 +60,7 @@ public final class Main {
         for (CommandInput cmd : commands) {
             // Update the timestamp at every new command
             timestamp = cmd.getTimestamp();
+            processor.updateEnvironment();
 
             // Executing the command and storing the output to ObjectNode
             ObjectNode resultNode = processor.processCommand(cmd);

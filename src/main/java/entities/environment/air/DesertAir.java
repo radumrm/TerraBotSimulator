@@ -19,7 +19,7 @@ public class DesertAir extends Air {
         if (isWeatherChanged()) {
             return normAirQuality - 30;
         }
-        return normAirQuality;
+        return Math.min(normAirQuality, 100);
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {

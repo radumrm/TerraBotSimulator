@@ -3,6 +3,7 @@ package process_commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import entities.Entity;
 import entities.environment.air.*;
 import entities.plants.Plant;
 import entities.animals.Animal;
@@ -39,6 +40,7 @@ public class CommandProcessor {
             case "getEnergyStatus" -> getEnergyStatus(command);
             case "rechargeBattery" -> rechargeBattery(commandInput);
             case "changeWeatherConditions" -> changeWeatherConditions(commandInput);
+            case "scanObject" -> scanObject(commandInput);
             default -> null;
         };
     }
@@ -328,5 +330,65 @@ public class CommandProcessor {
             return createNode(commandInput.getCommand(), "The weather has changed.");
         }
         return createNode(commandInput.getCommand(), "ERROR: The weather change does not affect the environment. Cannot perform action");
+    }
+
+    private ObjectNode scanObject(CommandInput commandInput) {
+        ObjectNode error = checkStartAndCharge(commandInput.getCommand());
+        if (error != null) {
+            return error;
+        }
+        if (terraBot.getEnergy() < 7) {
+            return createNode(commandInput.getCommand(), "ERROR: Not enough battery left. Cannot perform action");
+        }
+        String scannedType = "";
+        if (!commandInput.getSound().equals("none")) {
+            scannedType = "animal";
+        } else if (!commandInput.getSmell().equals("none") || !commandInput.getColor().equals("none")) {
+            scannedType = "plant";
+        } else {
+            scannedType = "water";
+        }
+        Box box = simulationMap.getBox(terraBot.getX(),  terraBot.getY());
+
+        switch(scannedType) {
+            case "animal":
+                if (box.getAnimal() != null) {
+                    terraBot.addToInventory(box.getAnimal());
+                    box.getAnimal().setScannedTimestamp(Main.timestamp);
+                    terraBot.setEnergy(terraBot.getEnergy() - 7);
+                    return createNode(commandInput.getCommand(), "The scanned object is an animal.");
+                }
+            case "plant":
+                if (box.getPlant() != null) {
+                    terraBot.addToInventory(box.getPlant());
+                    box.getPlant().setScannedTimestamp(Main.timestamp);
+                    terraBot.setEnergy(terraBot.getEnergy() - 7);
+                    return createNode(commandInput.getCommand(), "The scanned object is a plant.");
+                }
+            case "water":
+                if (box.getWater() != null) {
+                    terraBot.addToInventory(box.getWater());
+                    box.getWater().setScannedTimestamp(Main.timestamp);
+                    terraBot.setEnergy(terraBot.getEnergy() - 7);
+                    return createNode(commandInput.getCommand(), "The scanned object is water.");
+                }
+        }
+        return createNode(commandInput.getCommand(), "ERROR: Object not found. Cannot perform action");
+    }
+
+    public void updateEnvironment() {
+        if (!simulationStarted)
+            return;
+        for (Entity entity : terraBot.getInventory()) {
+            Box box = simulationMap.getBox(entity.getX(), entity.getY());
+
+            if (entity instanceof Plant) {
+                Plant plant =  (Plant) entity;
+                plant.grow();
+                if (!plant.isDead()) {
+                    box.getAir().addOxygenLevel(plant.oxygenLevel());
+                }
+            }
+        }
     }
 }

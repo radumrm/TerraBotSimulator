@@ -12,4 +12,9 @@ public class Ferns extends Plant {
     public double getPlant_possibility() {
         return plant_possibility;
     }
+    protected static double oxygenFromPlant = 0.0;
+    @Override
+    public double getOxygenFromPlant() {
+        return oxygenFromPlant;
+    }
 }

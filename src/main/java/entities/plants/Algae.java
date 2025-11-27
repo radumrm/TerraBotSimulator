@@ -11,4 +11,9 @@ public class Algae extends Plant {
     public double getPlant_possibility() {
         return plant_possibility;
     }
+    protected static double oxygenFromPlant = 0.5;
+    @Override
+    public double getOxygenFromPlant() {
+        return oxygenFromPlant;
+    }
 }

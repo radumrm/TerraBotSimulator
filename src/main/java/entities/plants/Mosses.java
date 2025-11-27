@@ -11,4 +11,9 @@ public class Mosses extends Plant {
     public double getPlant_possibility() {
         return plant_possibility;
     }
+    protected static double oxygenFromPlant = 0.8;
+    @Override
+    public double getOxygenFromPlant() {
+        return oxygenFromPlant;
+    }
 }

@@ -24,7 +24,7 @@ public abstract class Air extends Entity {
 
     public double getToxicityAQ() {
         double toxicityAQ = 100 * (1 - getAirQuality() /  getMaxScore());
-        return Math.round((100 * (1 - getAirQuality() / getMaxScore())) * 100.0) / 100.0;
+        return Math.max(0.0, Math.round((100 * (1 - getAirQuality() / getMaxScore())) * 100.0) / 100.0);
     }
 
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
@@ -36,5 +36,10 @@ public abstract class Air extends Entity {
 
     public boolean isWeatherChanged() {
         return (Main.timestamp - startChangeWeatherTimestamp) < 2;
+    }
+
+    public void addOxygenLevel(double level) {
+        this.oxygenLevel += level;
+        this.oxygenLevel = Math.round(this.oxygenLevel * 100.0) / 100.0;
     }
 }
