@@ -41,6 +41,8 @@ public class CommandProcessor {
             case "rechargeBattery" -> rechargeBattery(commandInput);
             case "changeWeatherConditions" -> changeWeatherConditions(commandInput);
             case "scanObject" -> scanObject(commandInput);
+            case "learnFact"  -> learnFact(commandInput);
+            case "printKnowledgeBase" -> printKnowledgeBase(commandInput);
             default -> null;
         };
     }
@@ -349,7 +351,6 @@ public class CommandProcessor {
             scannedType = "water";
         }
         Box box = simulationMap.getBox(terraBot.getX(),  terraBot.getY());
-
         switch(scannedType) {
             case "animal":
                 if (box.getAnimal() != null) {
@@ -383,7 +384,7 @@ public class CommandProcessor {
         if (!simulationStarted)
             return;
         for (Entity entity : terraBot.getInventory()) {
-            if (entity instanceof Plant) {
+            if (entity.isPlant()) {
                 Box box = simulationMap.getBox(entity.getX(), entity.getY());
                 Plant plant =  (Plant) entity;
                  plant.grow();
@@ -393,7 +394,7 @@ public class CommandProcessor {
             }
         }
         for (Entity entity : terraBot.getInventory()) {
-            if (entity instanceof Water) {
+            if (entity.isWater()) {
                 Water water = (Water) entity;
                 Box box = simulationMap.getBox(entity.getX(), entity.getY());
                 int age = Main.timestamp - water.getScannedTimestamp();
@@ -413,7 +414,7 @@ public class CommandProcessor {
         }
 
         for (Entity entity : terraBot.getInventory()) {
-            if (entity instanceof Animal) {
+            if (entity.isAnimal()) {
                 Animal animal = (Animal) entity;
 
                 if (animal.isDead()) {
@@ -425,10 +426,52 @@ public class CommandProcessor {
                     animal.move(simulationMap, terraBot);
                     animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
                     simulationMap.getBox(animal.getX(), animal.getY()).setAnimal(animal);
-                } else {
-                    animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
                 }
             }
         }
+    }
+
+    public ObjectNode learnFact(CommandInput commandInput) {
+        ObjectNode error = checkStartAndCharge(commandInput.getCommand());
+        if (error != null) {
+            return error;
+        }
+        if (terraBot.getEnergy() < 2) {
+            return createNode(commandInput.getCommand(), "ERROR: Not enough battery left. Cannot perform action");
+        }
+        terraBot.setEnergy(terraBot.getEnergy() - 2);
+        String scannedEntityName = commandInput.getComponents();
+        if (!terraBot.hasEntityScanned(scannedEntityName)) {
+            return createNode(commandInput.getCommand(), "ERROR: Subject not yet saved. Cannot perform action");
+        }
+        terraBot.addFact(scannedEntityName, commandInput.getSubject());
+        return createNode(commandInput.getCommand(), "The fact has been successfully saved in the database.");
+    }
+
+    public ObjectNode printKnowledgeBase(CommandInput commandInput) {
+        if (!simulationStarted) {
+            return createNode(commandInput.getCommand(), "ERROR: Simulation not started. Cannot perform action");
+        }
+
+        ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("command", commandInput.getCommand());
+        ArrayNode outputArray = mapper.createArrayNode();
+
+        for (Entity entity : terraBot.getInventory()) {
+            String topic = entity.getName();
+            if (terraBot.getFactsDataBase().containsKey(topic)) {
+                ObjectNode topicNode = mapper.createObjectNode();
+                topicNode.put("topic", topic);
+                ArrayNode factsNode = mapper.createArrayNode();
+                for (String fact : terraBot.getFactsDataBase().get(topic)) {
+                    factsNode.add(fact);
+                }
+                topicNode.set("facts", factsNode);
+                outputArray.add(topicNode);
+            }
+        }
+        objectNode.set("output", outputArray);
+        objectNode.put("timestamp", Main.timestamp);
+        return objectNode;
     }
 }

@@ -14,6 +14,11 @@ public abstract class Entity {
     protected double mass;
     protected String type;
 
+    protected boolean isWater = false;
+    protected boolean isPlant = false;
+    protected boolean isAnimal = false;
+
+
     protected int scannedTimestamp = -1;
 
     public Entity(String name, double mass, String type) {

@@ -11,6 +11,7 @@ public abstract class Plant extends Entity {
     public Plant(PlantInput plant) {
         super(plant.getName(), plant.getMass(), plant.getType());
         maturity = 0.0;
+        this.isPlant = true;
     }
 
 

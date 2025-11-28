@@ -24,6 +24,7 @@ public abstract class Animal extends Entity {
 
     public Animal(AnimalInput animalInput) {
         super(animalInput.getName(), animalInput.getMass(), animalInput.getType());
+        this.isAnimal = true;
     }
 
     public abstract double getAnimal_possibility_to_attack();
@@ -136,9 +137,9 @@ public abstract class Animal extends Entity {
         if (box.getWater() != null && box.getWater().isScanned()) {
             double intakeRate = 0.08;
             double waterMass = box.getWater().getMass();
-            double animalMass = box.getAnimal().getMass();
+            double animalMass = this.getMass();
             double waterToDrink = Math.min(animalMass * intakeRate, waterMass);
-            box.getAnimal().setMass(animalMass + waterToDrink);
+            this.setMass(animalMass + waterToDrink);
             box.getWater().setMass(waterMass - waterToDrink);
             if (box.getWater().getMass() <= 0) {
                 box.setWater(null);

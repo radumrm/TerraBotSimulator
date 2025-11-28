@@ -24,6 +24,7 @@ public class Water extends Entity {
         this.contaminantIndex = water.getContaminantIndex();
         this.pH = water.getPH();
         this.isFrozen = water.isFrozen();
+        this.isWater = true;
     }
 
     public double getWaterQuality() {
