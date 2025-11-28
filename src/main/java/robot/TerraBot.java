@@ -1,6 +1,8 @@
 package robot;
 
 import entities.Entity;
+import entities.environment.Water;
+import entities.plants.Plant;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,5 +38,23 @@ public class TerraBot {
         if (!inventory.contains(entity)) {
             inventory.add(entity);
         }
+    }
+
+    public Water getWaterFromInventory(int x, int y) {
+        for (Entity entity : inventory) {
+            if (entity.getX() == x && entity.getY() == y && entity instanceof Water) {
+                return (Water) entity;
+            }
+        }
+        return null;
+    }
+
+    public Plant getPlantFromInventory(int x, int y) {
+        for (Entity entity : inventory) {
+            if (entity.getX() == x && entity.getY() == y && entity instanceof Plant) {
+                return (Plant) entity;
+            }
+        }
+        return null;
     }
 }

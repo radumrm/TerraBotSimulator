@@ -408,5 +408,15 @@ public class CommandProcessor {
                 }
             }
         }
+        for (Entity entity : terraBot.getInventory()) {
+            if (entity instanceof Animal) {
+                Animal animal = (Animal) entity;
+                int age =  Main.timestamp - animal.getScannedTimestamp();
+                if (age % 2 == 0) {
+                    animal.move(simulationMap, terraBot);
+                    simulationMap.getBox(animal.getX(), animal.getY()).setAnimal(animal);
+                }
+            }
+        }
     }
 }
