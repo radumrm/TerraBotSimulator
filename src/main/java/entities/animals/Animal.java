@@ -5,6 +5,7 @@ import entities.environment.Water;
 import entities.plants.Plant;
 import fileio.AnimalInput;
 import lombok.Getter;
+import map.Box;
 import map.SimulationMap;
 import robot.TerraBot;
 
@@ -37,7 +38,6 @@ public abstract class Animal extends Entity {
         this.x = newX;
         this.y = newY;
 
-         // simulationMap.getBox(this.x, this.y).setAnimal(this);
     }
 
     int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -119,4 +119,39 @@ public abstract class Animal extends Entity {
         }
     }
 
+    private boolean isDead = false;
+    public void setDead() {
+        this.isDead = true;
+    }
+
+    protected void eatPlantOrWater(Box box) {
+        boolean canEatPlant = false;
+        boolean canEatWater = false;
+        if (box.getPlant() != null && box.getPlant().isScanned()) {
+            this.mass += box.getPlant().getMass();
+            box.setPlant(null);
+            canEatPlant = true;
+        }
+
+        if (box.getWater() != null && box.getWater().isScanned()) {
+            double intakeRate = 0.08;
+            double waterMass = box.getWater().getMass();
+            double animalMass = box.getAnimal().getMass();
+            double waterToDrink = Math.min(animalMass * intakeRate, waterMass);
+            box.getAnimal().setMass(animalMass + waterToDrink);
+            box.getWater().setMass(waterMass - waterToDrink);
+            if (box.getWater().getMass() <= 0) {
+                box.setWater(null);
+            }
+            canEatWater = true;
+        }
+
+        if (canEatWater && canEatPlant) {
+            box.getSoil().addOrganicMatter(0.8);
+        } else if (canEatWater || canEatPlant) {
+            box.getSoil().addOrganicMatter(0.5);
+        }
+    }
+
+    public abstract void eat(Box box);
 }

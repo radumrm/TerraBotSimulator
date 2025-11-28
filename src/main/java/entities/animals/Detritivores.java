@@ -1,6 +1,7 @@
 package entities.animals;
 
 import fileio.AnimalInput;
+import map.Box;
 
 public class Detritivores extends  Animal {
     protected static double animal_possibility_to_attack = 90;
@@ -10,5 +11,9 @@ public class Detritivores extends  Animal {
     @Override
     public double getAnimal_possibility_to_attack() {
         return animal_possibility_to_attack;
+    }
+    @Override
+    public void eat(Box box) {
+        eatPlantOrWater(box);
     }
 }

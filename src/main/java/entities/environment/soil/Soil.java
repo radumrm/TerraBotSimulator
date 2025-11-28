@@ -27,4 +27,9 @@ public abstract class Soil extends Entity {
     public abstract double PossibilityToGetStuckInSoil();
 
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
+
+    public void addOrganicMatter(double ammount) {
+        this.organicMatter += ammount;
+        this.organicMatter = Math.round(this.organicMatter * 100.0) / 100.0;
+    }
 }

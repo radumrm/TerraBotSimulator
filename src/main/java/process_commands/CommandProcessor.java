@@ -358,6 +358,7 @@ public class CommandProcessor {
                     terraBot.setEnergy(terraBot.getEnergy() - 7);
                     return createNode(commandInput.getCommand(), "The scanned object is an animal.");
                 }
+                break;
             case "plant":
                 if (box.getPlant() != null) {
                     terraBot.addToInventory(box.getPlant());
@@ -365,6 +366,7 @@ public class CommandProcessor {
                     terraBot.setEnergy(terraBot.getEnergy() - 7);
                     return createNode(commandInput.getCommand(), "The scanned object is a plant.");
                 }
+                break;
             case "water":
                 if (box.getWater() != null) {
                     terraBot.addToInventory(box.getWater());
@@ -372,6 +374,7 @@ public class CommandProcessor {
                     terraBot.setEnergy(terraBot.getEnergy() - 7);
                     return createNode(commandInput.getCommand(), "The scanned object is water.");
                 }
+                break;
         }
         return createNode(commandInput.getCommand(), "ERROR: Object not found. Cannot perform action");
     }
@@ -408,13 +411,22 @@ public class CommandProcessor {
                 }
             }
         }
+
         for (Entity entity : terraBot.getInventory()) {
             if (entity instanceof Animal) {
                 Animal animal = (Animal) entity;
+
+                if (animal.isDead()) {
+                    continue;
+                }
+
                 int age =  Main.timestamp - animal.getScannedTimestamp();
                 if (age % 2 == 0) {
                     animal.move(simulationMap, terraBot);
+                    animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
                     simulationMap.getBox(animal.getX(), animal.getY()).setAnimal(animal);
+                } else {
+                    animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
                 }
             }
         }
