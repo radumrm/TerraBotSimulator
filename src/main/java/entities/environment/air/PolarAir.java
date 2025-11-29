@@ -19,7 +19,7 @@ public class PolarAir extends Air {
         if (isWeatherChanged()) {
             return normAirQuality - windSpeed * 0.2;
         }
-        return normAirQuality;
+        return Math.min(normAirQuality, 100);
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {

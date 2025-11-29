@@ -52,4 +52,10 @@ public abstract class Plant extends Entity {
         }
         return maturityOxygenRate() + getOxygenFromPlant();
     }
+
+    @Override
+    public String improveEnvironment(map.Box box, String improvementType) {
+        box.getAir().addOxygenLevel(0.3);
+        return "The " + this.name + " was planted successfully.";
+    }
 }

@@ -19,7 +19,7 @@ public class TropicalAir extends Air {
         if (isWeatherChanged()) {
             return normAirQuality + rainfall * 0.3;
         }
-        return normAirQuality;
+        return Math.min(normAirQuality, 100);
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {

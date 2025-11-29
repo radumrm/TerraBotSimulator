@@ -155,4 +155,10 @@ public abstract class Animal extends Entity {
     }
 
     public abstract void eat(Box box);
+
+    @Override
+    public String improveEnvironment(map.Box box, String improvementType) {
+        box.getSoil().addOrganicMatter(0.3);
+        return "The soil was successfully fertilized using" + this.name + ".";
+    }
 }

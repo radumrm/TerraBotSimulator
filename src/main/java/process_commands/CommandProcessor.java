@@ -43,6 +43,7 @@ public class CommandProcessor {
             case "scanObject" -> scanObject(commandInput);
             case "learnFact"  -> learnFact(commandInput);
             case "printKnowledgeBase" -> printKnowledgeBase(commandInput);
+            case "improveEnvironment" -> improveEnvironment(commandInput);
             default -> null;
         };
     }
@@ -117,10 +118,11 @@ public class CommandProcessor {
     }
 
     private String getQualityAsString(double quality) {
-        if (quality >= 70)
+        if (quality >= 70) {
             return "good";
-        else if (quality >= 40)
+        } else if (quality >= 40) {
             return "moderate";
+        }
         return "poor";
     }
 
@@ -276,6 +278,8 @@ public class CommandProcessor {
             return error;
         }
         terraBot.recharge(commandInput.getTimeToCharge(), Main.timestamp);
+        for (int i = 0; i < commandInput.getTimeToCharge(); i++)
+            updateEnvironment();
         return createNode(commandInput.getCommand(), "Robot battery is charging.");
     }
 
@@ -383,17 +387,19 @@ public class CommandProcessor {
     public void updateEnvironment() {
         if (!simulationStarted)
             return;
-        for (Entity entity : terraBot.getInventory()) {
+        for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isPlant()) {
                 Box box = simulationMap.getBox(entity.getX(), entity.getY());
                 Plant plant =  (Plant) entity;
                  plant.grow();
                 if (!plant.isDead()) {
                     box.getAir().addOxygenLevel(plant.oxygenLevel());
+                } else {
+                    simulationMap.getBox(plant.getX(), plant.getY()).setPlant(null);
                 }
             }
         }
-        for (Entity entity : terraBot.getInventory()) {
+        for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isWater()) {
                 Water water = (Water) entity;
                 Box box = simulationMap.getBox(entity.getX(), entity.getY());
@@ -413,7 +419,7 @@ public class CommandProcessor {
             }
         }
 
-        for (Entity entity : terraBot.getInventory()) {
+        for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isAnimal()) {
                 Animal animal = (Animal) entity;
 
@@ -424,7 +430,7 @@ public class CommandProcessor {
                 int age =  Main.timestamp - animal.getScannedTimestamp();
                 if (age % 2 == 0) {
                     animal.move(simulationMap, terraBot);
-                    animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
+                    // animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
                     simulationMap.getBox(animal.getX(), animal.getY()).setAnimal(animal);
                 }
             }
@@ -439,12 +445,12 @@ public class CommandProcessor {
         if (terraBot.getEnergy() < 2) {
             return createNode(commandInput.getCommand(), "ERROR: Not enough battery left. Cannot perform action");
         }
-        terraBot.setEnergy(terraBot.getEnergy() - 2);
         String scannedEntityName = commandInput.getComponents();
         if (!terraBot.hasEntityScanned(scannedEntityName)) {
             return createNode(commandInput.getCommand(), "ERROR: Subject not yet saved. Cannot perform action");
         }
         terraBot.addFact(scannedEntityName, commandInput.getSubject());
+        terraBot.setEnergy(terraBot.getEnergy() - 2);
         return createNode(commandInput.getCommand(), "The fact has been successfully saved in the database.");
     }
 
@@ -457,7 +463,7 @@ public class CommandProcessor {
         objectNode.put("command", commandInput.getCommand());
         ArrayNode outputArray = mapper.createArrayNode();
 
-        for (Entity entity : terraBot.getInventory()) {
+        for (Entity entity : terraBot.getScannedEntities()) {
             String topic = entity.getName();
             if (terraBot.getFactsDataBase().containsKey(topic)) {
                 ObjectNode topicNode = mapper.createObjectNode();
@@ -473,5 +479,36 @@ public class CommandProcessor {
         objectNode.set("output", outputArray);
         objectNode.put("timestamp", Main.timestamp);
         return objectNode;
+    }
+
+    private ObjectNode improveEnvironment(CommandInput commandInput) {
+        ObjectNode error = checkStartAndCharge(commandInput.getCommand());
+        if (error != null) {
+            return error;
+        }
+        if (terraBot.getEnergy() < 10) {
+            return createNode(commandInput.getCommand(), "ERROR: Not enough battery left. Cannot perform action");
+        }
+
+        String entityName = commandInput.getName();
+        String improvementType = commandInput.getImprovementType();
+
+        Entity entity = terraBot.getEntityFromInventory(entityName);
+
+        if (entity == null) {
+            return createNode(commandInput.getCommand(), "ERROR: Subject not yet saved. Cannot perform action");
+        }
+
+        if (!terraBot.hasFactsAbout(entityName)) {
+            return createNode(commandInput.getCommand(), "ERROR: Fact not yet saved. Cannot perform action");
+        }
+
+        terraBot.setEnergy(terraBot.getEnergy() - 10);
+        terraBot.removeFromInventory(entityName);
+
+        Box box = simulationMap.getBox(terraBot.getX(),  terraBot.getY());
+
+        String outputMessage = entity.improveEnvironment(box, improvementType);
+        return  createNode(commandInput.getCommand(), outputMessage);
     }
 }

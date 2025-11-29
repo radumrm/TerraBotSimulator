@@ -1,5 +1,6 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,4 +34,9 @@ public abstract class Entity {
     public boolean isScanned() {
         return scannedTimestamp != -1;
     }
+
+    public String improveEnvironment(map.Box box, String improvementType) {
+        return "";
+    }
+
 }

@@ -20,7 +20,7 @@ public class TemperateAir extends Air {
             double seasonPenalty = season.equalsIgnoreCase("Spring") ? 15 : 0;
             return normAirQuality - seasonPenalty;
         }
-        return normAirQuality;
+        return Math.min(normAirQuality, 100);
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {

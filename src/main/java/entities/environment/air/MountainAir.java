@@ -19,7 +19,7 @@ public class MountainAir extends Air {
         if (isWeatherChanged()) {
             return normAirQuality - 0.1 * numberOfHikers;
         }
-        return normAirQuality;
+        return Math.min(normAirQuality, 100);
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {

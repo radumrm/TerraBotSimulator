@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fileio.WaterInput;
 import entities.Entity;
 import lombok.Getter;
+import lombok.Setter;
 
 import static java.lang.Math.abs;
 
@@ -36,5 +37,16 @@ public class Water extends Entity {
         double frozen_score = isFrozen ? 0 : 1;
         double water_quality = 0.3 * purity_score + 0.2 * pH_score + 0.15 * salinity_score + 0.1 * turbidity_score + 0.15 * contaminant_score + 0.2 * frozen_score;
         return water_quality * 100;
+    }
+
+    @Override
+    public String improveEnvironment(map.Box box, String improvementType) {
+        if (improvementType.equals("increaseHumidity")) {
+            box.getAir().setHumidity(box.getAir().getHumidity() + 0.2);
+            return "The humidity was successfully increased using " + this.name + ".";
+        } else {
+            box.getSoil().setWaterRetention(box.getSoil().getWaterRetention() + 0.2);
+            return "The moisture was successfully increased using " + this.name + ".";
+        }
     }
 }
