@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+import static utils.MagicNumber.D_100;
+
 @Getter
 @Setter
 public abstract class Entity {
@@ -28,7 +30,7 @@ public abstract class Entity {
         this.type = type;
     }
     protected double NormalizedAndRounded(double score) {
-        return Math.round(Math.max(0, Math.min(100, score)) * 100.0) / 100.0;
+        return Math.round(Math.max(0, Math.min(100, score)) * D_100) / D_100;
     }
 
     public boolean isScanned() {

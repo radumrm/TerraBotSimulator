@@ -6,6 +6,8 @@ import fileio.SoilInput;
 import lombok.Getter;
 import lombok.Setter;
 
+import static utils.MagicNumber.D_100;
+
 @Getter
 @Setter
 public abstract class Soil extends Entity {
@@ -30,6 +32,6 @@ public abstract class Soil extends Entity {
 
     public void addOrganicMatter(double ammount) {
         this.organicMatter += ammount;
-        this.organicMatter = Math.round(this.organicMatter * 100.0) / 100.0;
+        this.organicMatter = Math.round(this.organicMatter * D_100) / D_100;
     }
 }

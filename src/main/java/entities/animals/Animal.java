@@ -1,5 +1,5 @@
 package entities.animals;
-
+import utils.MagicNumber;
 import entities.Entity;
 import entities.environment.Water;
 import entities.plants.Plant;
@@ -11,6 +11,8 @@ import robot.TerraBot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static utils.MagicNumber.D_10;
 
 @Getter
 public abstract class Animal extends Entity {
@@ -30,7 +32,7 @@ public abstract class Animal extends Entity {
     public abstract double getAnimal_possibility_to_attack();
 
     public double PossibilityToBeAttackedByAnimal() {
-        return (100 - this.getAnimal_possibility_to_attack()) / 10.0;
+        return (100 - this.getAnimal_possibility_to_attack()) / D_10;
     }
 
     private void executeMove(SimulationMap simulationMap, int newX, int newY) {

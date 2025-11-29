@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static java.lang.Math.abs;
+import static utils.MagicNumber.SEVEN_POINT_FIVE;
 
 @Getter
 public class Water extends Entity {
@@ -30,7 +31,7 @@ public class Water extends Entity {
 
     public double getWaterQuality() {
         double purity_score = purity / 100;
-        double pH_score = 1 - Math.abs(pH - 7.5) / 7.5;
+        double pH_score = 1 - Math.abs(pH - SEVEN_POINT_FIVE) / SEVEN_POINT_FIVE;
         double salinity_score = 1 - (salinity / 350);
         double turbidity_score = 1 - (turbidity / 100);
         double contaminant_score = 1 - (contaminantIndex / 100);

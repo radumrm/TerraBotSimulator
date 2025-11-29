@@ -2,6 +2,8 @@ package entities.plants;
 
 import fileio.PlantInput;
 
+import static utils.MagicNumber.D_6;
+
 public class FloweringPlants extends Plant {
     protected static double plant_possibility = 90;
     public FloweringPlants(PlantInput plantInput) {
@@ -11,9 +13,9 @@ public class FloweringPlants extends Plant {
     public double getPlant_possibility() {
         return plant_possibility;
     }
-    protected static double oxygenFromPlant = 6.0;
+    protected static double oxygenFromPlant = D_6;
     @Override
     public double getOxygenFromPlant() {
-        return 6.0;
+        return D_6;
     }
 }

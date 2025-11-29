@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
 
+import static utils.MagicNumber.D_100;
+
 @Getter
 public class TropicalAir extends Air {
     private double co2Level;
@@ -36,6 +38,6 @@ public class TropicalAir extends Air {
         changeWeather();
     }
     public void  setCo2Level(double co2Level) {
-        this.co2Level = Math.round(co2Level * 100.0) / 100.0;
+        this.co2Level = Math.round(co2Level * D_100) / D_100;
     }
 }

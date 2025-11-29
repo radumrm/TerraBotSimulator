@@ -16,6 +16,8 @@ import map.Box;
 import map.SimulationMap;
 import robot.TerraBot;
 
+import static utils.MagicNumber.D_100;
+
 public class CommandProcessor {
     private final SimulationMap simulationMap;
     private final TerraBot terraBot;
@@ -411,11 +413,11 @@ public class CommandProcessor {
                 if (age % 2 == 0) {
                     Air air = box.getAir();
                     double newHumidity = air.getHumidity() + 0.1;
-                    air.setHumidity(Math.round(newHumidity * 100.0) / 100.0);
+                    air.setHumidity(Math.round(newHumidity * D_100) / D_100);
 
                     Soil soil = box.getSoil();
                     double newWaterRetention = soil.getWaterRetention() + 0.1;
-                    soil.setWaterRetention(Math.round(newWaterRetention * 100.0) / 100.0);
+                    soil.setWaterRetention(Math.round(newWaterRetention * D_100) / D_100);
                 }
             }
         }

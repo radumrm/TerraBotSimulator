@@ -3,8 +3,10 @@ package entities.animals;
 import fileio.AnimalInput;
 import map.Box;
 
+import static utils.MagicNumber.D_10;
+
 public class Parasites extends Animal {
-    protected static double animal_possibility_to_attack = 10;
+    protected static double animal_possibility_to_attack = D_10;
     public Parasites(AnimalInput input) {
         super(input);
     }

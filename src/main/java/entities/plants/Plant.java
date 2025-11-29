@@ -4,6 +4,9 @@ import entities.Entity;
 import fileio.PlantInput;
 import lombok.Getter;
 
+import static utils.MagicNumber.D_100;
+import static utils.MagicNumber.D_3;
+
 @Getter
 public abstract class Plant extends Entity {
     protected double maturity;
@@ -18,14 +21,14 @@ public abstract class Plant extends Entity {
     public abstract double getPlant_possibility();
 
     public double PossibiltyToGetStuckInPlants() {
-        return getPlant_possibility() / 100.0;
+        return getPlant_possibility() / D_100;
     }
 
     public void grow() {
         if (!isDead()) {
             double addedMaturity = 0.2;
             this.maturity += addedMaturity;
-            this.maturity = Math.round(this.maturity * 100.0) / 100.0;
+            this.maturity = Math.round(this.maturity * D_100) / D_100;
         }
     }
 
@@ -40,7 +43,7 @@ public abstract class Plant extends Entity {
             return 0.2;
         } else if (maturity < 2.0) {
             return 0.7;
-        } else if (maturity < 3.0) {
+        } else if (maturity < D_3) {
             return 0.4;
         }
         return 0;

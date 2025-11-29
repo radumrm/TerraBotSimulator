@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import main.Main;
 
+import static utils.MagicNumber.D_100;
+
 @Getter
 @Setter
 public abstract class Air extends Entity {
@@ -31,7 +33,7 @@ public abstract class Air extends Entity {
 
     public double getToxicityAQ() {
         double toxicityAQ = 100 * (1 - getAirQuality() /  getMaxScore());
-        return Math.max(0.0, Math.round((100 * (1 - getAirQuality() / getMaxScore())) * 100.0) / 100.0);
+        return Math.max(0.0, Math.round((100 * (1 - getAirQuality() / getMaxScore())) * D_100) / D_100);
     }
 
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
@@ -47,6 +49,6 @@ public abstract class Air extends Entity {
 
     public void addOxygenLevel(double level) {
         this.oxygenLevel += level;
-        this.oxygenLevel = Math.round(this.oxygenLevel * 100.0) / 100.0;
+        this.oxygenLevel = Math.round(this.oxygenLevel * D_100) / D_100;
     }
 }
