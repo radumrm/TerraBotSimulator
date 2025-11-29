@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.SoilInput;
 import lombok.Getter;
 
+import static utils.MagicNumber.*;
+
 public class ForestSoil extends Soil {
     @Getter private double leafLitter;
     public ForestSoil(SoilInput input) {
@@ -14,7 +16,7 @@ public class ForestSoil extends Soil {
     @Override
     public double getSoilQuality() {
         double soilQuality = (nitrogen * 1.2) + (organicMatter * 2)
-                            + (waterRetention * 1.5) + (leafLitter * 0.3);
+                            + (waterRetention * ONE_POINT_FIVE) + (leafLitter * POINT_THREE);
         return NormalizedAndRounded(soilQuality);
     }
 
@@ -25,6 +27,6 @@ public class ForestSoil extends Soil {
 
     @Override
     public double PossibilityToGetStuckInSoil() {
-        return (waterRetention * 0.6 + leafLitter * 0.4) / 80 * 100;
+        return (waterRetention * POINT_SIX + leafLitter * POINT_FOUR) / 80 * ONE_HUNDRED;
     }
 }

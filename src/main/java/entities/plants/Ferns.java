@@ -3,8 +3,10 @@ package entities.plants;
 import entities.plants.Plant;
 import fileio.PlantInput;
 
+import static utils.MagicNumber.THIRTY;
+
 public class Ferns extends Plant {
-    protected static double plant_possibility = 30;
+    protected static double plant_possibility = THIRTY;
     public Ferns(PlantInput plantInput) {
         super(plantInput);
     }

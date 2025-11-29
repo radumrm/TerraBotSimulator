@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
 
+import static utils.MagicNumber.*;
+
 @Getter
 public class TemperateAir extends Air {
     private double pollenLevel;
@@ -15,13 +17,13 @@ public class TemperateAir extends Air {
     }
     @Override
     public double getAirQuality() {
-        double airQuality = (oxygenLevel * 2) + (humidity * 0.7) - (pollenLevel * 0.1);
+        double airQuality = (oxygenLevel * 2) + (humidity * POINT_SEVEN) - (pollenLevel * POINT_ONE);
         double normAirQuality = NormalizedAndRounded(airQuality);
         if (isWeatherChanged()) {
             double seasonPenalty = season.equalsIgnoreCase("Spring") ? 15 : 0;
             return normAirQuality - seasonPenalty;
         }
-        return Math.min(normAirQuality, 100);
+        return Math.min(normAirQuality, ONE_HUNDRED);
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {

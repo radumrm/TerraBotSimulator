@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.SoilInput;
 import lombok.Getter;
 
+import static utils.MagicNumber.*;
+
 public class TundraSoil extends Soil {
     @Getter private double permafrostDepth;
     public TundraSoil(SoilInput input) {
@@ -13,8 +15,8 @@ public class TundraSoil extends Soil {
 
     @Override
     public double getSoilQuality() {
-        double soilQuality = (nitrogen * 0.7) + (organicMatter * 0.5)
-                            - (permafrostDepth * 1.5);
+        double soilQuality = (nitrogen * POINT_SEVEN) + (organicMatter * POINT_FIVE)
+                            - (permafrostDepth * ONE_POINT_FIVE);
         return NormalizedAndRounded(soilQuality);
     }
 
@@ -26,6 +28,6 @@ public class TundraSoil extends Soil {
 
     @Override
     public double PossibilityToGetStuckInSoil() {
-        return (50 - permafrostDepth) / 50 * 100;
+        return (50 - permafrostDepth) / 50 * ONE_HUNDRED;
     }
 }

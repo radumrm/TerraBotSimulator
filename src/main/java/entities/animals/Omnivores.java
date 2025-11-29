@@ -9,7 +9,7 @@ public class Omnivores extends Animal {
         super(input);
     }
     @Override
-    public double getAnimal_possibility_to_attack() {
+    public double getAnimalPossibilityToAttack() {
         return animal_possibility_to_attack;
     }
     @Override

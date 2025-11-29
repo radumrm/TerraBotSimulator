@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.SoilInput;
 import lombok.Getter;
 
+import static utils.MagicNumber.*;
+
 public class DesertSoil extends Soil {
     @Getter private double salinity;
     public DesertSoil(SoilInput input) {
@@ -13,7 +15,7 @@ public class DesertSoil extends Soil {
 
     @Override
     public double getSoilQuality() {
-        double soilQuality = (nitrogen * 0.5) + (waterRetention * 0.3)
+        double soilQuality = (nitrogen * POINT_FIVE) + (waterRetention * POINT_THREE)
                             - (salinity * 2);
         return NormalizedAndRounded(soilQuality);
     }
@@ -25,6 +27,6 @@ public class DesertSoil extends Soil {
 
     @Override
     public double PossibilityToGetStuckInSoil() {
-        return (100 - waterRetention + salinity) / 100 * 100;
+        return (ONE_HUNDRED - waterRetention + salinity) / D_100 * ONE_HUNDRED;
     }
 }

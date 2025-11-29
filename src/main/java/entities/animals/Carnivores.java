@@ -3,13 +3,16 @@ package entities.animals;
 import fileio.AnimalInput;
 import map.Box;
 
+import static utils.MagicNumber.POINT_FIVE;
+import static utils.MagicNumber.THIRTY;
+
 public class Carnivores extends  Animal{
-    protected static double animal_possibility_to_attack = 30;
+    protected static double animal_possibility_to_attack = THIRTY;
     public Carnivores(AnimalInput input) {
         super(input);
     }
     @Override
-    public double getAnimal_possibility_to_attack() {
+    public double getAnimalPossibilityToAttack() {
         return animal_possibility_to_attack;
     }
     @Override
@@ -19,7 +22,7 @@ public class Carnivores extends  Animal{
             this.mass += prey.getMass();
             prey.setDead();
             box.setAnimal(this);
-            box.getSoil().addOrganicMatter(0.5);
+            box.getSoil().addOrganicMatter(POINT_FIVE);
             return;
         }
         eatPlantOrWater(box);

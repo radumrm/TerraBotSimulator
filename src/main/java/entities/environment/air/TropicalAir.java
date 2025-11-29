@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
 
-import static utils.MagicNumber.D_100;
+import static utils.MagicNumber.*;
 
 @Getter
 public class TropicalAir extends Air {
@@ -17,12 +17,12 @@ public class TropicalAir extends Air {
     }
     @Override
     public double getAirQuality() {
-        double airQuality = (oxygenLevel * 2) + (humidity * 0.5) - (co2Level * 0.01);
+        double airQuality = (oxygenLevel * 2) + (humidity * POINT_FIVE) - (co2Level * POINT_ZERO_ONE);
         double normAirQuality = NormalizedAndRounded(airQuality);
         if (isWeatherChanged()) {
-            return normAirQuality + rainfall * 0.3;
+            return normAirQuality + rainfall * POINT_THREE;
         }
-        return Math.min(normAirQuality, 100);
+        return Math.min(normAirQuality, ONE_HUNDRED);
     }
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {

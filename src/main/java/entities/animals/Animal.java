@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static utils.MagicNumber.D_10;
+import static utils.MagicNumber.ONE_HUNDRED;
+import static utils.MagicNumber.POINT_ZERO_EIGHT;
+import static utils.MagicNumber.POINT_EIGHT;
+import static utils.MagicNumber.POINT_FIVE;
+import static utils.MagicNumber.POINT_THREE;
 
 @Getter
 public abstract class Animal extends Entity {
@@ -24,15 +29,15 @@ public abstract class Animal extends Entity {
 
     protected State state;
 
-    public Animal(AnimalInput animalInput) {
+    public Animal(final AnimalInput animalInput) {
         super(animalInput.getName(), animalInput.getMass(), animalInput.getType());
         this.isAnimal = true;
     }
 
-    public abstract double getAnimal_possibility_to_attack();
+    public abstract double getAnimalPossibilityToAttack();
 
     public double PossibilityToBeAttackedByAnimal() {
-        return (100 - this.getAnimal_possibility_to_attack()) / D_10;
+        return (ONE_HUNDRED - this.getAnimalPossibilityToAttack()) / D_10;
     }
 
     private void executeMove(SimulationMap simulationMap, int newX, int newY) {
@@ -143,7 +148,7 @@ public abstract class Animal extends Entity {
         }
 
         if (box.getWater() != null && box.getWater().isScanned()) {
-            double intakeRate = 0.08;
+            double intakeRate = POINT_ZERO_EIGHT;
             double waterMass = box.getWater().getMass();
             double animalMass = this.getMass();
             double waterToDrink = Math.min(animalMass * intakeRate, waterMass);
@@ -156,9 +161,9 @@ public abstract class Animal extends Entity {
         }
 
         if (canEatWater && canEatPlant) {
-            box.getSoil().addOrganicMatter(0.8);
+            box.getSoil().addOrganicMatter(POINT_EIGHT);
         } else if (canEatWater || canEatPlant) {
-            box.getSoil().addOrganicMatter(0.5);
+            box.getSoil().addOrganicMatter(POINT_FIVE);
         }
     }
 
@@ -166,7 +171,7 @@ public abstract class Animal extends Entity {
 
     @Override
     public String improveEnvironment(map.Box box, String improvementType) {
-        box.getSoil().addOrganicMatter(0.3);
+        box.getSoil().addOrganicMatter(POINT_THREE);
         return "The soil was successfully fertilized using " + this.name;
     }
 }

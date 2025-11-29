@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.SoilInput;
 import lombok.Getter;
 
+import static utils.MagicNumber.*;
+
 public class GrasslandSoil extends Soil {
     @Getter private double rootDensity;
     public GrasslandSoil(SoilInput input) {
@@ -13,8 +15,8 @@ public class GrasslandSoil extends Soil {
 
     @Override
     public double getSoilQuality() {
-        double soilQuality = (nitrogen * 1.3) + (organicMatter * 1.5)
-                            + (rootDensity * 0.8);
+        double soilQuality = (nitrogen * ONE_POINT_THREE) + (organicMatter * ONE_POINT_FIVE)
+                            + (rootDensity * POINT_EIGHT);
         return NormalizedAndRounded(soilQuality);
     }
 
@@ -25,6 +27,6 @@ public class GrasslandSoil extends Soil {
 
     @Override
     public double PossibilityToGetStuckInSoil() {
-        return ((50 - rootDensity) + waterRetention * 0.5) / 75 * 100;
+        return ((50 - rootDensity) + waterRetention * POINT_FIVE) / 75 * ONE_HUNDRED;
     }
 }

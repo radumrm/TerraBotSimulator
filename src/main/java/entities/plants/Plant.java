@@ -4,8 +4,7 @@ import entities.Entity;
 import fileio.PlantInput;
 import lombok.Getter;
 
-import static utils.MagicNumber.D_100;
-import static utils.MagicNumber.D_3;
+import static utils.MagicNumber.*;
 
 @Getter
 public abstract class Plant extends Entity {
@@ -26,7 +25,7 @@ public abstract class Plant extends Entity {
 
     public void grow() {
         if (!isDead()) {
-            double addedMaturity = 0.2;
+            double addedMaturity = POINT_TWO;
             this.maturity += addedMaturity;
             this.maturity = Math.round(this.maturity * D_100) / D_100;
         }
@@ -40,11 +39,11 @@ public abstract class Plant extends Entity {
 
     public double maturityOxygenRate() {
         if (maturity < 1.0) {
-            return 0.2;
+            return POINT_TWO;
         } else if (maturity < 2.0) {
-            return 0.7;
+            return POINT_SEVEN;
         } else if (maturity < D_3) {
-            return 0.4;
+            return POINT_FOUR;
         }
         return 0;
     }
@@ -58,7 +57,7 @@ public abstract class Plant extends Entity {
 
     @Override
     public String improveEnvironment(map.Box box, String improvementType) {
-        box.getAir().addOxygenLevel(0.3);
+        box.getAir().addOxygenLevel(POINT_THREE);
         return "The " + this.name + " was planted successfully.";
     }
 }

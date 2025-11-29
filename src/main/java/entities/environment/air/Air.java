@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import main.Main;
 
-import static utils.MagicNumber.D_100;
+import static utils.MagicNumber.*;
 
 @Getter
 @Setter
@@ -32,13 +32,13 @@ public abstract class Air extends Entity {
     public abstract double getMaxScore();
 
     public double getToxicityAQ() {
-        double toxicityAQ = 100 * (1 - getAirQuality() /  getMaxScore());
-        return Math.max(0.0, Math.round((100 * (1 - getAirQuality() / getMaxScore())) * D_100) / D_100);
+        double toxicityAQ = ONE_HUNDRED * (1 - getAirQuality() /  getMaxScore());
+        return Math.max(0.0, Math.round((ONE_HUNDRED * (1 - getAirQuality() / getMaxScore())) * D_100) / D_100);
     }
 
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
 
-    protected int startChangeWeatherTimestamp = -2;
+    protected int startChangeWeatherTimestamp = MIN_TWO;
     public void changeWeather() {
         startChangeWeatherTimestamp = Main.timestamp;
     }

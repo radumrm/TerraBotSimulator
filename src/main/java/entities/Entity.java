@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static utils.MagicNumber.D_100;
+import static utils.MagicNumber.ONE_HUNDRED;
 
 @Getter
 @Setter
@@ -30,7 +31,7 @@ public abstract class Entity {
         this.type = type;
     }
     protected double NormalizedAndRounded(double score) {
-        return Math.round(Math.max(0, Math.min(100, score)) * D_100) / D_100;
+        return Math.round(Math.max(0, Math.min(ONE_HUNDRED, score)) * D_100) / D_100;
     }
 
     public boolean isScanned() {

@@ -4,6 +4,7 @@ import fileio.AnimalInput;
 import map.Box;
 
 import static utils.MagicNumber.D_10;
+import static utils.MagicNumber.POINT_FIVE;
 
 public class Parasites extends Animal {
     protected static double animal_possibility_to_attack = D_10;
@@ -11,7 +12,7 @@ public class Parasites extends Animal {
         super(input);
     }
     @Override
-    public double getAnimal_possibility_to_attack() {
+    public double getAnimalPossibilityToAttack() {
         return animal_possibility_to_attack;
     }
     @Override
@@ -21,7 +22,7 @@ public class Parasites extends Animal {
             this.mass += prey.getMass();
             prey.setDead();
             box.setAnimal(this);
-            box.getSoil().addOrganicMatter(0.5);
+            box.getSoil().addOrganicMatter(POINT_FIVE);
             return;
         }
         eatPlantOrWater(box);
