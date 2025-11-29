@@ -10,30 +10,42 @@ import static utils.MagicNumber.*;
 public class MountainAir extends Air {
     private double altitude;
     private int numberOfHikers = 0;
-    public MountainAir(AirInput air) {
+    public MountainAir(final AirInput air) {
         super(air);
         this.altitude = air.getAltitude();
-        this.isMountainAir = true;
+        super.isMountainAir = true;
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getAirQuality() {
         double airQuality = ((oxygenLevel - (altitude/ONE_THOUSAND*POINT_FIVE)) * 2) + (humidity * POINT_SIX);
-        double normAirQuality = NormalizedAndRounded(airQuality);
+        double normAirQuality = normalizedAndRounded(airQuality);
         if (isWeatherChanged()) {
             return normAirQuality - POINT_ONE * numberOfHikers;
         }
         return Math.min(normAirQuality, ONE_HUNDRED);
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public void addSpecificFieldsToNode (ObjectNode objectNode) {
         objectNode.put("altitude", this.altitude);
     }
     protected static double maxScore = SEVENTY_EIGHT;
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getMaxScore() {
         return maxScore;
     }
-    public void setNumberOfHikers(int numberOfHikers) {
+    public void setNumberOfHikers(final int numberOfHikers) {
         this.numberOfHikers = numberOfHikers;
         changeWeather();
     }

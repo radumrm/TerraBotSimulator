@@ -17,7 +17,7 @@ public class DesertSoil extends Soil {
     public double getSoilQuality() {
         double soilQuality = (nitrogen * POINT_FIVE) + (waterRetention * POINT_THREE)
                             - (salinity * 2);
-        return NormalizedAndRounded(soilQuality);
+        return normalizedAndRounded(soilQuality);
     }
 
     @Override

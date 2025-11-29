@@ -7,16 +7,24 @@ import static utils.MagicNumber.D_10;
 import static utils.MagicNumber.POINT_FIVE;
 
 public class Parasites extends Animal {
-    protected static double animal_possibility_to_attack = D_10;
-    public Parasites(AnimalInput input) {
+    protected static double animalPossibilityToAttack = D_10;
+    public Parasites(final AnimalInput input) {
         super(input);
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getAnimalPossibilityToAttack() {
-        return animal_possibility_to_attack;
+        return animalPossibilityToAttack;
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public void eat(Box box) {
+    public void eat(final Box box) {
         Animal prey = box.getAnimal();
         if (prey != null && prey != this) {
             this.mass += prey.getMass();

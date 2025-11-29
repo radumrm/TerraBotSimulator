@@ -1,15 +1,49 @@
 package entities;
 
-import entities.animals.*;
+import entities.animals.Animal;
+import entities.animals.Herbivores;
+import entities.animals.Detritivores;
+import entities.animals.Carnivores;
+import entities.animals.Parasites;
+import entities.animals.Omnivores;
+
 import entities.environment.Water;
-import entities.environment.air.*;
-import entities.environment.soil.*;
-import entities.plants.*;
-import fileio.*;
 
-public class CreateEntity {
+import entities.environment.air.Air;
+import entities.environment.air.DesertAir;
+import entities.environment.air.TropicalAir;
+import entities.environment.air.MountainAir;
+import entities.environment.air.PolarAir;
+import entities.environment.air.TemperateAir;
 
-    public static Air createAir(AirInput input) {
+import entities.environment.soil.Soil;
+import entities.environment.soil.DesertSoil;
+import entities.environment.soil.ForestSoil;
+import entities.environment.soil.GrasslandSoil;
+import entities.environment.soil.SwampSoil;
+import entities.environment.soil.TundraSoil;
+
+import entities.plants.Plant;
+import entities.plants.Algae;
+import entities.plants.Ferns;
+import entities.plants.FloweringPlants;
+import entities.plants.GymnospermsPlants;
+import entities.plants.Mosses;
+
+import fileio.AirInput;
+import fileio.SoilInput;
+import fileio.WaterInput;
+import fileio.PlantInput;
+import fileio.AnimalInput;
+
+public final class CreateEntity {
+
+    private CreateEntity() { }
+    /**
+     * todo
+     * comentriu
+     */
+    public static Air createAir(final AirInput input) {
         return switch (input.getType()) {
             case "TropicalAir" -> new TropicalAir(input);
             case "DesertAir" -> new DesertAir(input);
@@ -19,8 +53,11 @@ public class CreateEntity {
             default -> null;
         };
     }
-
-    public static Soil createSoil(SoilInput input) {
+    /**
+     * todo
+     * comentriu
+     */
+    public static Soil createSoil(final SoilInput input) {
         return switch (input.getType()) {
             case "ForestSoil" -> new ForestSoil(input);
             case "SwampSoil" -> new SwampSoil(input);
@@ -30,12 +67,18 @@ public class CreateEntity {
             default -> null;
         };
     }
-
-    public static Water createWater(WaterInput input) {
+    /**
+     * todo
+     * comentriu
+     */
+    public static Water createWater(final WaterInput input) {
         return new Water(input);
     }
-
-    public static Plant createPlant(PlantInput input) {
+    /**
+     * todo
+     * comentriu
+     */
+    public static Plant createPlant(final PlantInput input) {
         return switch (input.getType()) {
             case "FloweringPlants" -> new FloweringPlants(input);
             case "GymnospermsPlants" -> new GymnospermsPlants(input);
@@ -45,8 +88,11 @@ public class CreateEntity {
             default -> null;
         };
     }
-
-    public static Animal createAnimal(AnimalInput input) {
+    /**
+     * todo
+     * comentriu
+     */
+    public static Animal createAnimal(final AnimalInput input) {
         return switch (input.getType()) {
             case "Herbivores" -> new Herbivores(input);
             case "Carnivores" -> new Carnivores(input);

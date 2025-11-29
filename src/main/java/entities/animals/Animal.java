@@ -1,5 +1,4 @@
 package entities.animals;
-import utils.MagicNumber;
 import entities.Entity;
 import entities.environment.Water;
 import entities.plants.Plant;
@@ -18,6 +17,8 @@ import static utils.MagicNumber.POINT_ZERO_EIGHT;
 import static utils.MagicNumber.POINT_EIGHT;
 import static utils.MagicNumber.POINT_FIVE;
 import static utils.MagicNumber.POINT_THREE;
+import static utils.MagicNumber.FOUR;
+
 
 @Getter
 public abstract class Animal extends Entity {
@@ -33,14 +34,23 @@ public abstract class Animal extends Entity {
         super(animalInput.getName(), animalInput.getMass(), animalInput.getType());
         this.isAnimal = true;
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     public abstract double getAnimalPossibilityToAttack();
-
-    public double PossibilityToBeAttackedByAnimal() {
+    /**
+     * todo
+     * comentriu
+     */
+    public double possibilityToBeAttackedByAnimal() {
         return (ONE_HUNDRED - this.getAnimalPossibilityToAttack()) / D_10;
     }
-
-    private void executeMove(SimulationMap simulationMap, int newX, int newY) {
+    /**
+     * todo
+     * comentriu
+     */
+    private void executeMove(final SimulationMap simulationMap, final int newX, final int newY) {
         simulationMap.getBox(this.x, this.y).setAnimal(null);
 
         this.x = newX;
@@ -48,9 +58,12 @@ public abstract class Animal extends Entity {
 
     }
 
-    int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-
-    public void move(SimulationMap simulationMap, TerraBot terraBot) {
+    private int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    /**
+     * todo
+     * comentriu
+     */
+    public void move(final SimulationMap simulationMap, final TerraBot terraBot) {
         int currentX = this.getX();
         int currentY = this.getY();
         int width = simulationMap.getWidth();
@@ -61,13 +74,13 @@ public abstract class Animal extends Entity {
         double maxWaterQuality = -1;
 
         // Generating water and plant lists for every neighbour in the right order
-        List <Water> waterList = new ArrayList<Water>();
-        List <Plant> plantList = new ArrayList<Plant>();
+        List<Water> waterList = new ArrayList<Water>();
+        List<Plant> plantList = new ArrayList<Plant>();
 
         // Populating the lists
-        for (int[] direction : directions ) {
-            int auxX = currentX + direction[0] ;
-            int auxY = currentY + direction[1] ;
+        for (int[] direction : directions) {
+            int auxX = currentX + direction[0];
+            int auxY = currentY + direction[1];
             if (auxX >= 0 && auxX < width && auxY >= 0 && auxY < height) {
                 waterList.add(terraBot.getWaterFromInventory(auxX, auxY));
                 plantList.add(terraBot.getPlantFromInventory(auxX, auxY));
@@ -79,13 +92,14 @@ public abstract class Animal extends Entity {
         }
 
         // Checking to see if we have a neighbour with a scanned plant and a scanned water
-        for (int i = 0; i < 4; i++) {
-            int auxX = currentX + directions[i][0] ;
+        for (int i = 0; i < FOUR; i++) {
+            int auxX = currentX + directions[i][0];
             int auxY = currentY + directions[i][1];
-            if (waterList.get(i) != null && plantList.get(i) != null && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
+            if (waterList.get(i) != null && plantList.get(i) != null
+                    && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
                 if (waterList.get(i).getWaterQuality() > maxWaterQuality) {
-                    newX =  currentX + directions[i][0];
-                    newY =  currentY + directions[i][1];
+                    newX = currentX + directions[i][0];
+                    newY = currentY + directions[i][1];
                     maxWaterQuality = waterList.get(i).getWaterQuality();
                 }
             }
@@ -96,7 +110,7 @@ public abstract class Animal extends Entity {
         }
 
         // Checking to see if we have a neighbour with a scanned plant
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < FOUR; i++) {
             int auxX = currentX + directions[i][0];
             int auxY = currentY + directions[i][1];
             if (plantList.get(i) != null && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
@@ -108,10 +122,11 @@ public abstract class Animal extends Entity {
         }
 
         // Checking to see if we have a neighbour with a scanned water
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < FOUR; i++) {
             int auxX = currentX + directions[i][0];
             int auxY = currentY + directions[i][1];
-            if (waterList.get(i) != null && waterList.get(i).getWaterQuality()  > maxWaterQuality && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
+            if (waterList.get(i) != null && waterList.get(i).getWaterQuality()  > maxWaterQuality
+                    && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
                 newX =  currentX + directions[i][0];
                 newY =  currentY + directions[i][1];
                 maxWaterQuality = waterList.get(i).getWaterQuality();
@@ -123,10 +138,11 @@ public abstract class Animal extends Entity {
         }
 
         // Going to the first in bounds neighbour
-        for (int i = 0; i < 4; i++) {
-            int auxX = currentX + directions[i][0] ;
-            int auxY = currentY + directions[i][1] ;
-            if (auxX >= 0 && auxX < width && auxY >= 0 && auxY < height && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
+        for (int i = 0; i < FOUR; i++) {
+            int auxX = currentX + directions[i][0];
+            int auxY = currentY + directions[i][1];
+            if (auxX >= 0 && auxX < width && auxY >= 0
+                    && auxY < height && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
                 executeMove(simulationMap, auxX, auxY);
                 return;
             }
@@ -134,11 +150,18 @@ public abstract class Animal extends Entity {
     }
 
     private boolean isDead = false;
+    /**
+     * todo
+     * comentriu
+     */
     public void setDead() {
         this.isDead = true;
     }
-
-    protected void eatPlantOrWater(Box box) {
+    /**
+     * todo
+     * comentriu
+     */
+    protected void eatPlantOrWater(final Box box) {
         boolean canEatPlant = false;
         boolean canEatWater = false;
         if (box.getPlant() != null && box.getPlant().isScanned()) {
@@ -166,11 +189,17 @@ public abstract class Animal extends Entity {
             box.getSoil().addOrganicMatter(POINT_FIVE);
         }
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     public abstract void eat(Box box);
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public String improveEnvironment(map.Box box, String improvementType) {
+    public String improveEnvironment(final Box box, final String improvementType) {
         box.getSoil().addOrganicMatter(POINT_THREE);
         return "The soil was successfully fertilized using " + this.name;
     }

@@ -1,6 +1,5 @@
 package entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,20 +24,30 @@ public abstract class Entity {
 
     protected int scannedTimestamp = -1;
 
-    public Entity(String name, double mass, String type) {
+    public Entity(final String name, final double mass, final String type) {
         this.name = name;
         this.mass = mass;
         this.type = type;
     }
-    protected double NormalizedAndRounded(double score) {
+    /**
+     * todo
+     * comentriu
+     */
+    protected double normalizedAndRounded(final double score) {
         return Math.round(Math.max(0, Math.min(ONE_HUNDRED, score)) * D_100) / D_100;
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     public boolean isScanned() {
         return scannedTimestamp != -1;
     }
-
-    public String improveEnvironment(map.Box box, String improvementType) {
+    /**
+     * todo
+     * comentriu
+     */
+    public String improveEnvironment(final map.Box box, final String improvementType) {
         return "";
     }
 

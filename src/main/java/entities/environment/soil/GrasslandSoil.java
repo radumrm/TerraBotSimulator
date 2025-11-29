@@ -17,7 +17,7 @@ public class GrasslandSoil extends Soil {
     public double getSoilQuality() {
         double soilQuality = (nitrogen * ONE_POINT_THREE) + (organicMatter * ONE_POINT_FIVE)
                             + (rootDensity * POINT_EIGHT);
-        return NormalizedAndRounded(soilQuality);
+        return normalizedAndRounded(soilQuality);
     }
 
     @Override

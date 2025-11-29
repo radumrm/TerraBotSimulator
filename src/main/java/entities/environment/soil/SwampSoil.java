@@ -17,7 +17,7 @@ public class SwampSoil extends Soil {
     public double getSoilQuality() {
         double soilQuality = (nitrogen * ONE_POINT_ONE) + (organicMatter * TWO_POINT_TWO)
                             - (waterLogging * 5);
-        return NormalizedAndRounded(soilQuality);
+        return normalizedAndRounded(soilQuality);
     }
 
     @Override

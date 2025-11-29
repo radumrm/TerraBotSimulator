@@ -3,17 +3,27 @@ package entities.animals;
 import fileio.AnimalInput;
 import map.Box;
 
+import static utils.MagicNumber.D_90;
+
 public class Detritivores extends  Animal {
-    protected static double animal_possibility_to_attack = 90;
-    public Detritivores(AnimalInput input) {
+    protected static double animalPossibilityToAttack = D_90;
+    public Detritivores(final AnimalInput input) {
         super(input);
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getAnimalPossibilityToAttack() {
-        return animal_possibility_to_attack;
+        return animalPossibilityToAttack;
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public void eat(Box box) {
+    public void eat(final Box box) {
         eatPlantOrWater(box);
     }
 }

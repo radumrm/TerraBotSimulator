@@ -17,7 +17,7 @@ public class TundraSoil extends Soil {
     public double getSoilQuality() {
         double soilQuality = (nitrogen * POINT_SEVEN) + (organicMatter * POINT_FIVE)
                             - (permafrostDepth * ONE_POINT_FIVE);
-        return NormalizedAndRounded(soilQuality);
+        return normalizedAndRounded(soilQuality);
     }
 
     @Override

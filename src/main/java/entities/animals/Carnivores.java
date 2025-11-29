@@ -6,17 +6,25 @@ import map.Box;
 import static utils.MagicNumber.POINT_FIVE;
 import static utils.MagicNumber.THIRTY;
 
-public class Carnivores extends  Animal{
-    protected static double animal_possibility_to_attack = THIRTY;
-    public Carnivores(AnimalInput input) {
+public class Carnivores extends  Animal {
+    protected static double animalPossibilityToAttack = THIRTY;
+    public Carnivores(final AnimalInput input) {
         super(input);
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getAnimalPossibilityToAttack() {
-        return animal_possibility_to_attack;
+        return animalPossibilityToAttack;
     }
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public void eat(Box box) {
+    public void eat(final Box box) {
         Animal prey = box.getAnimal();
         if (prey != null && prey != this) {
             this.mass += prey.getMass();

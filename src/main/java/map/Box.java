@@ -22,7 +22,7 @@ public class Box {
         double count = 2.0;
         sum += soil.PossibilityToGetStuckInSoil() + air.getToxicityAQ();
         if (animal != null) {
-            sum += animal.PossibilityToBeAttackedByAnimal();
+            sum += animal.possibilityToBeAttackedByAnimal();
             count++;
         }
         if (plant != null) {

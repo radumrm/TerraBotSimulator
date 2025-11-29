@@ -17,7 +17,7 @@ public class ForestSoil extends Soil {
     public double getSoilQuality() {
         double soilQuality = (nitrogen * 1.2) + (organicMatter * 2)
                             + (waterRetention * ONE_POINT_FIVE) + (leafLitter * POINT_THREE);
-        return NormalizedAndRounded(soilQuality);
+        return normalizedAndRounded(soilQuality);
     }
 
     @Override
