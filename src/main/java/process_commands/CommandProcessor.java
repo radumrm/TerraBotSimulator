@@ -196,13 +196,20 @@ public class CommandProcessor {
                 sectionNode.add(y);
                 boxNode.set("section", sectionNode);
 
+                IO.println("pentru x=" + x + " y=" + y);
                 int count = 0;
-                if (box.getPlant() != null)
+                if (box.getPlant() != null) {
                     count++;
-                if (box.getAnimal() != null)
+                    IO.println("plant=" + box.getPlant().getName());
+                }
+                if (box.getAnimal() != null) {
                     count++;
-                if (box.getWater() != null)
+                    IO.println("animal=" + box.getAnimal().getName());
+                }
+                if (box.getWater() != null) {
                     count++;
+                    IO.println("water=" + box.getWater().getName());
+                }
                 boxNode.put("totalNrOfObjects", count);
 
                 double airQ = box.getAir().getAirQuality();
@@ -344,7 +351,7 @@ public class CommandProcessor {
             return error;
         }
         if (terraBot.getEnergy() < 7) {
-            return createNode(commandInput.getCommand(), "ERROR: Not enough battery left. Cannot perform action");
+            return createNode(commandInput.getCommand(), "ERROR: Not enough energy to perform action");
         }
         String scannedType = "";
         if (!commandInput.getSound().equals("none")) {
@@ -395,7 +402,7 @@ public class CommandProcessor {
                 if (!plant.isDead()) {
                     box.getAir().addOxygenLevel(plant.oxygenLevel());
                 } else {
-                    simulationMap.getBox(plant.getX(), plant.getY()).setPlant(null);
+                     simulationMap.getBox(plant.getX(), plant.getY()).setPlant(null);
                 }
             }
         }
@@ -511,4 +518,5 @@ public class CommandProcessor {
         String outputMessage = entity.improveEnvironment(box, improvementType);
         return  createNode(commandInput.getCommand(), outputMessage);
     }
+
 }

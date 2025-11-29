@@ -73,7 +73,9 @@ public abstract class Animal extends Entity {
 
         // Checking to see if we have a neighbour with a scanned plant and a scanned water
         for (int i = 0; i < 4; i++) {
-            if (waterList.get(i) != null && plantList.get(i) != null) {
+            int auxX = currentX + directions[i][0] ;
+            int auxY = currentY + directions[i][1];
+            if (waterList.get(i) != null && plantList.get(i) != null && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
                 if (waterList.get(i).getWaterQuality() > maxWaterQuality) {
                     newX =  currentX + directions[i][0];
                     newY =  currentY + directions[i][1];
@@ -88,7 +90,9 @@ public abstract class Animal extends Entity {
 
         // Checking to see if we have a neighbour with a scanned plant
         for (int i = 0; i < 4; i++) {
-            if (plantList.get(i) != null) {
+            int auxX = currentX + directions[i][0];
+            int auxY = currentY + directions[i][1];
+            if (plantList.get(i) != null && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
                 newX =  currentX + directions[i][0];
                 newY =  currentY + directions[i][1];
                 executeMove(simulationMap, newX, newY);
@@ -98,7 +102,9 @@ public abstract class Animal extends Entity {
 
         // Checking to see if we have a neighbour with a scanned water
         for (int i = 0; i < 4; i++) {
-            if (waterList.get(i) != null && waterList.get(i).getWaterQuality()  > maxWaterQuality) {
+            int auxX = currentX + directions[i][0];
+            int auxY = currentY + directions[i][1];
+            if (waterList.get(i) != null && waterList.get(i).getWaterQuality()  > maxWaterQuality && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
                 newX =  currentX + directions[i][0];
                 newY =  currentY + directions[i][1];
                 maxWaterQuality = waterList.get(i).getWaterQuality();
@@ -110,10 +116,10 @@ public abstract class Animal extends Entity {
         }
 
         // Going to the first in bounds neighbour
-        for (int[] direction : directions) {
-            int auxX = currentX + direction[0] ;
-            int auxY = currentY + direction[1] ;
-            if (auxX >= 0 && auxX < width && auxY >= 0 && auxY < height) {
+        for (int i = 0; i < 4; i++) {
+            int auxX = currentX + directions[i][0] ;
+            int auxY = currentY + directions[i][1] ;
+            if (auxX >= 0 && auxX < width && auxY >= 0 && auxY < height && simulationMap.getBox(auxX, auxY).getAnimal() == null) {
                 executeMove(simulationMap, auxX, auxY);
                 return;
             }
@@ -159,6 +165,6 @@ public abstract class Animal extends Entity {
     @Override
     public String improveEnvironment(map.Box box, String improvementType) {
         box.getSoil().addOrganicMatter(0.3);
-        return "The soil was successfully fertilized using" + this.name + ".";
+        return "The soil was successfully fertilized using " + this.name;
     }
 }

@@ -40,33 +40,46 @@ public final class Main {
         InputLoader inputLoader = new InputLoader(inputPath);
         ArrayNode output = MAPPER.createArrayNode();
 
-        // Loading the data
-        SimulationInput simData = inputLoader.getSimulations().getFirst();
-        TerritorySectionParamsInput proprieties = simData.getTerritorySectionParams();
+        List<CommandInput> commands = inputLoader.getCommands();
+        List<SimulationInput> simulations = inputLoader.getSimulations();
 
-        // Initializing and Populating the map
-        SimulationMap simulationMap = new SimulationMap(simData.getTerritoryDim());
-        simulationMap.PopulateMap(proprieties);
+        int currentSimulation = 0;
+
+        SimulationInput simulationInput = simulations.get(currentSimulation);
+        TerritorySectionParamsInput territoryParams = simulationInput.getTerritorySectionParams();
+
+        SimulationMap simulationMap = new SimulationMap(simulationInput.getTerritoryDim());
+        simulationMap.PopulateMap(territoryParams);
 
         // Initializing the robot
-        TerraBot terraBot = new TerraBot(simData.getEnergyPoints());
-
+        TerraBot terraBot = new TerraBot(simulationInput.getEnergyPoints());
         // Initializing the command processor
         CommandProcessor processor = new CommandProcessor(simulationMap, terraBot);
 
-        // Storing the command in a List and then executing them 1 by 1
-        List<CommandInput> commands = inputLoader.getCommands();
-
-        for (CommandInput cmd : commands) {
+        for (CommandInput commandInput : commands) {
             // Update the timestamp at every new command
-            timestamp = cmd.getTimestamp();
+            timestamp = commandInput.getTimestamp();
+            // Update Env
             processor.updateEnvironment();
-
             // Executing the command and storing the output to ObjectNode
-            ObjectNode resultNode = processor.processCommand(cmd);
+            ObjectNode resultNode = processor.processCommand(commandInput);
 
             if (resultNode != null) {
                 output.add(resultNode);
+                if (commandInput.getCommand().equals("endSimulation") && resultNode.has("message") && resultNode.get("message").asText().equals("Simulation has ended.")) {
+                    if (currentSimulation < simulations.size() - 1) {
+                        currentSimulation++;
+                        SimulationInput newSimulationInput = simulations.get(currentSimulation);
+                        TerritorySectionParamsInput nextProperties = newSimulationInput.getTerritorySectionParams();
+
+                        simulationMap = new SimulationMap(newSimulationInput.getTerritoryDim());
+                        simulationMap.PopulateMap(nextProperties);
+
+                        terraBot = new TerraBot(newSimulationInput.getEnergyPoints());
+
+                        processor = new CommandProcessor(simulationMap, terraBot);
+                    }
+                }
             }
         }
 

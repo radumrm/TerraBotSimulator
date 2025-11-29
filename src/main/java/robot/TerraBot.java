@@ -3,6 +3,7 @@ package robot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import entities.Entity;
+import entities.animals.Animal;
 import entities.environment.Water;
 import entities.plants.Plant;
 import lombok.Getter;
@@ -50,7 +51,7 @@ public class TerraBot {
 
     public Water getWaterFromInventory(int x, int y) {
         for (Entity entity : inventory) {
-            if (entity.getX() == x && entity.getY() == y && entity instanceof Water) {
+            if (entity.getX() == x && entity.getY() == y && entity.isWater()) {
                 return (Water) entity;
             }
         }
@@ -59,7 +60,7 @@ public class TerraBot {
 
     public Plant getPlantFromInventory(int x, int y) {
         for (Entity entity : inventory) {
-            if (entity.getX() == x && entity.getY() == y && entity instanceof Plant) {
+            if (entity.getX() == x && entity.getY() == y && entity.isPlant()) {
                 return (Plant) entity;
             }
         }

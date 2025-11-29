@@ -43,10 +43,10 @@ public class Water extends Entity {
     public String improveEnvironment(map.Box box, String improvementType) {
         if (improvementType.equals("increaseHumidity")) {
             box.getAir().setHumidity(box.getAir().getHumidity() + 0.2);
-            return "The humidity was successfully increased using " + this.name + ".";
+            return "The humidity was successfully increased using " + this.name;
         } else {
             box.getSoil().setWaterRetention(box.getSoil().getWaterRetention() + 0.2);
-            return "The moisture was successfully increased using " + this.name + ".";
+            return "The moisture was successfully increased using " + this.name;
         }
     }
 }

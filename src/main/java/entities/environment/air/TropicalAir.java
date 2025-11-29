@@ -10,7 +10,7 @@ public class TropicalAir extends Air {
     private double rainfall = 0;
     public TropicalAir(AirInput air) {
         super(air);
-        this.co2Level = air.getCo2Level();
+        setCo2Level(air.getCo2Level());
     }
     @Override
     public double getAirQuality() {
@@ -33,5 +33,8 @@ public class TropicalAir extends Air {
     public void setRainfall(double rainfall) {
         this.rainfall = rainfall;
         changeWeather();
+    }
+    public void  setCo2Level(double co2Level) {
+        this.co2Level = Math.round(co2Level * 100.0) / 100.0;
     }
 }
