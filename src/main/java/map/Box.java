@@ -8,6 +8,8 @@ import entities.environment.soil.Soil;
 import lombok.Getter;
 import lombok.Setter;
 
+import static utils.MagicNumber.TWO;
+
 @Getter
 @Setter
 public class Box {
@@ -17,16 +19,20 @@ public class Box {
     private Plant plant;
     private Animal animal;
 
+    /**
+     * todo
+     * comentriu
+     */
     public int getCost() {
         double sum = 0.0;
-        double count = 2.0;
+        double count = TWO;
         sum += soil.possibilityToGetStuckInSoil() + air.getToxicityAQ();
         if (animal != null) {
             sum += animal.possibilityToBeAttackedByAnimal();
             count++;
         }
         if (plant != null) {
-            sum += plant.PossibiltyToGetStuckInPlants();
+            sum += plant.possibiltyToGetStuckInPlants();
             count++;
         }
         double mean = Math.abs(sum / count);

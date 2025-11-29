@@ -1,13 +1,18 @@
 package map;
 
+import entities.animals.Animal;
 import entities.environment.Water;
 import entities.environment.air.Air;
 import entities.environment.soil.Soil;
 import entities.plants.Plant;
-import fileio.*;
-import entities.Entity;
+import fileio.AnimalInput;
+import fileio.PlantInput;
+import fileio.AirInput;
+import fileio.SoilInput;
+import fileio.WaterInput;
+import fileio.TerritorySectionParamsInput;
+import fileio.PairInput;
 import entities.CreateEntity;
-import entities.animals.*;
 import lombok.Getter;
 
 @Getter
@@ -16,7 +21,7 @@ public class SimulationMap {
     private int height;
     private int width;
 
-    public SimulationMap(String dimensions) {
+    public SimulationMap(final String dimensions) {
         String[] dimensionsArray = dimensions.split("x");
         height = Integer.parseInt(dimensionsArray[0]);
         width = Integer.parseInt(dimensionsArray[1]);
@@ -27,12 +32,18 @@ public class SimulationMap {
             }
         }
     }
-
-    public Box getBox(int x, int y) {
+    /**
+     * todo
+     * comentriu
+     */
+    public Box getBox(final int x, final int y) {
         return map[x][y];
     }
-
-    public void PopulateMap(TerritorySectionParamsInput proprieties) {
+    /**
+     * todo
+     * comentriu
+     */
+    public void populateMap(final TerritorySectionParamsInput proprieties) {
         if (proprieties.getSoil() != null) {
             for (SoilInput input : proprieties.getSoil()) {
                 for (PairInput coord : input.getSections()) {
@@ -85,3 +96,4 @@ public class SimulationMap {
         }
     }
 }
+

@@ -49,7 +49,7 @@ public final class Main {
         TerritorySectionParamsInput territoryParams = simulationInput.getTerritorySectionParams();
 
         SimulationMap simulationMap = new SimulationMap(simulationInput.getTerritoryDim());
-        simulationMap.PopulateMap(territoryParams);
+        simulationMap.populateMap(territoryParams);
 
         // Initializing the robot
         TerraBot terraBot = new TerraBot(simulationInput.getEnergyPoints());
@@ -66,14 +66,15 @@ public final class Main {
 
             if (resultNode != null) {
                 output.add(resultNode);
-                if (commandInput.getCommand().equals("endSimulation") && resultNode.has("message") && resultNode.get("message").asText().equals("Simulation has ended.")) {
+                if (commandInput.getCommand().equals("endSimulation") && resultNode.has("message")
+                        && resultNode.get("message").asText().equals("Simulation has ended.")) {
                     if (currentSimulation < simulations.size() - 1) {
                         currentSimulation++;
                         SimulationInput newSimulationInput = simulations.get(currentSimulation);
-                        TerritorySectionParamsInput nextProperties = newSimulationInput.getTerritorySectionParams();
-
+                        TerritorySectionParamsInput nextProperties = null;
+                        nextProperties = newSimulationInput.getTerritorySectionParams();
                         simulationMap = new SimulationMap(newSimulationInput.getTerritoryDim());
-                        simulationMap.PopulateMap(nextProperties);
+                        simulationMap.populateMap(nextProperties);
 
                         terraBot = new TerraBot(newSimulationInput.getEnergyPoints());
 

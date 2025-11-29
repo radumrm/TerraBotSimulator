@@ -4,11 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import entities.Entity;
-import entities.environment.air.*;
+import entities.environment.air.TemperateAir;
+import entities.environment.air.DesertAir;
+import entities.environment.air.TropicalAir;
+import entities.environment.air.MountainAir;
+import entities.environment.air.PolarAir;
+import entities.environment.air.Air;
 import entities.plants.Plant;
 import entities.animals.Animal;
 import entities.environment.Water;
-import entities.environment.air.Air;
 import entities.environment.soil.Soil;
 import fileio.CommandInput;
 import main.Main;
@@ -18,6 +22,10 @@ import robot.TerraBot;
 
 import static utils.MagicNumber.D_100;
 import static utils.MagicNumber.POINT_ONE;
+import static utils.MagicNumber.D_40;
+import static utils.MagicNumber.D_70;
+import static utils.MagicNumber.TEN;
+import static utils.MagicNumber.SEVEN;
 
 public class CommandProcessor {
     private final SimulationMap simulationMap;
@@ -26,13 +34,16 @@ public class CommandProcessor {
 
     private boolean simulationStarted = false;
 
-    public CommandProcessor(SimulationMap simulationMap, TerraBot terraBot) {
+    public CommandProcessor(final SimulationMap simulationMap, final TerraBot terraBot) {
         this.simulationMap = simulationMap;
         this.terraBot = terraBot;
         this.mapper = new ObjectMapper();
     }
-
-    public ObjectNode processCommand(CommandInput commandInput) {
+    /**
+     * todo
+     * comentriu
+     */
+    public ObjectNode processCommand(final CommandInput commandInput) {
         String command = commandInput.getCommand();
         return switch (command) {
             case "startSimulation" -> startSimulation(command);
@@ -50,16 +61,22 @@ public class CommandProcessor {
             default -> null;
         };
     }
-
-    private ObjectNode createNode(String command, String message) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode createNode(final String command, final String message) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("command", command);
         objectNode.put("message", message);
         objectNode.put("timestamp", Main.timestamp);
         return objectNode;
     }
-
-    private ObjectNode createSoilNode(Soil soil) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode createSoilNode(final Soil soil) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("type", soil.getType());
         objectNode.put("name", soil.getName());
@@ -72,8 +89,11 @@ public class CommandProcessor {
         soil.addSpecificFieldsToNode(objectNode);
         return objectNode;
     }
-
-    private ObjectNode createAirNode(Air air) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode createAirNode(final Air air) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("type", air.getType());
         objectNode.put("name", air.getName());
@@ -85,32 +105,44 @@ public class CommandProcessor {
         air.addSpecificFieldsToNode(objectNode);
         return objectNode;
     }
-
-    private ObjectNode createPlantNode(Plant plant) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode createPlantNode(final Plant plant) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("type", plant.getType());
         objectNode.put("name", plant.getName());
         objectNode.put("mass", plant.getMass());
         return  objectNode;
     }
-
-    private ObjectNode createWaterNode(Water water) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode createWaterNode(final Water water) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("type", water.getType());
         objectNode.put("name", water.getName());
         objectNode.put("mass", water.getMass());
         return  objectNode;
     }
-
-    private ObjectNode createAnimalNode(Animal animal) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode createAnimalNode(final Animal animal) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("type", animal.getType());
         objectNode.put("name", animal.getName());
         objectNode.put("mass", animal.getMass());
         return  objectNode;
     }
-
-    private ObjectNode checkStartAndCharge(String command) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode checkStartAndCharge(final String command) {
         if (!simulationStarted) {
             return createNode(command, "ERROR: Simulation not started. Cannot perform action");
         }
@@ -119,33 +151,45 @@ public class CommandProcessor {
         }
         return null;
     }
-
-    private String getQualityAsString(double quality) {
-        if (quality >= 70) {
+    /**
+     * todo
+     * comentriu
+     */
+    private String getQualityAsString(final double quality) {
+        if (quality >= D_70) {
             return "good";
-        } else if (quality >= 40) {
+        } else if (quality >= D_40) {
             return "moderate";
         }
         return "poor";
     }
-
-    private ObjectNode startSimulation(String command) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode startSimulation(final String command) {
         if (simulationStarted) {
             return createNode(command, "ERROR: Simulation already started. Cannot perform action");
         }
         this.simulationStarted = true;
         return createNode(command, "Simulation has started.");
     }
-
-    private ObjectNode endSimulation(String command) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode endSimulation(final String command) {
         if (!simulationStarted) {
             return createNode(command, "ERROR: Simulation not started. Cannot perform action");
         }
         this.simulationStarted = false;
         return createNode(command, "Simulation has ended.");
     }
-
-    private ObjectNode printEnvConditions(String command) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode printEnvConditions(final String command) {
         ObjectNode error = checkStartAndCharge(command);
         if (error != null) {
             return error;
@@ -177,8 +221,11 @@ public class CommandProcessor {
         objectNode.put("timestamp", Main.timestamp);
         return objectNode;
     }
-
-    private ObjectNode printMap(String command) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode printMap(final String command) {
         ObjectNode error = checkStartAndCharge(command);
         if (error != null) {
             return error;
@@ -200,12 +247,15 @@ public class CommandProcessor {
                 boxNode.set("section", sectionNode);
 
                 int count = 0;
-                if (box.getPlant() != null)
+                if (box.getPlant() != null) {
                     count++;
-                if (box.getAnimal() != null)
+                }
+                if (box.getAnimal() != null) {
                     count++;
-                if (box.getWater() != null)
+                }
+                if (box.getWater() != null) {
                     count++;
+                }
 
                 boxNode.put("totalNrOfObjects", count);
 
@@ -223,8 +273,11 @@ public class CommandProcessor {
         objectNode.put("timestamp", Main.timestamp);
         return objectNode;
     }
-
-    private ObjectNode moveRobot(String command) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode moveRobot(final String command) {
         ObjectNode error = checkStartAndCharge(command);
         if (error != null) {
             return error;
@@ -267,16 +320,22 @@ public class CommandProcessor {
         }
         return null;
     }
-
-    private ObjectNode getEnergyStatus(String command) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode getEnergyStatus(final String command) {
         ObjectNode error = checkStartAndCharge(command);
         if (error != null) {
             return error;
         }
-        return  createNode(command, "TerraBot has " + terraBot.getEnergy() +" energy points left.");
+        return  createNode(command, "TerraBot has " + terraBot.getEnergy() + " energy points left.");
     }
-
-    private ObjectNode rechargeBattery(CommandInput commandInput) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode rechargeBattery(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
@@ -286,8 +345,11 @@ public class CommandProcessor {
             updateEnvironment();
         return createNode(commandInput.getCommand(), "Robot battery is charging.");
     }
-
-    private ObjectNode changeWeatherConditions(CommandInput commandInput) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode changeWeatherConditions(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
@@ -341,13 +403,16 @@ public class CommandProcessor {
         }
         return createNode(commandInput.getCommand(), "ERROR: The weather change does not affect the environment. Cannot perform action");
     }
-
-    private ObjectNode scanObject(CommandInput commandInput) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode scanObject(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
         }
-        if (terraBot.getEnergy() < 7) {
+        if (terraBot.getEnergy() < SEVEN) {
             return createNode(commandInput.getCommand(), "ERROR: Not enough energy to perform action");
         }
         String scannedType = "";
@@ -359,20 +424,21 @@ public class CommandProcessor {
             scannedType = "water";
         }
         Box box = simulationMap.getBox(terraBot.getX(),  terraBot.getY());
-        switch(scannedType) {
+        switch (scannedType) {
             case "animal":
                 if (box.getAnimal() != null) {
                     terraBot.addToInventory(box.getAnimal());
                     box.getAnimal().setScannedTimestamp(Main.timestamp);
-                    terraBot.setEnergy(terraBot.getEnergy() - 7);
-                    return createNode(commandInput.getCommand(), "The scanned object is an animal.");
+                    terraBot.setEnergy(terraBot.getEnergy() - SEVEN);
+                    String out = "The scanned object is an animal.";
+                    return createNode(commandInput.getCommand(), out);
                 }
                 break;
             case "plant":
                 if (box.getPlant() != null) {
                     terraBot.addToInventory(box.getPlant());
                     box.getPlant().setScannedTimestamp(Main.timestamp);
-                    terraBot.setEnergy(terraBot.getEnergy() - 7);
+                    terraBot.setEnergy(terraBot.getEnergy() - SEVEN);
                     return createNode(commandInput.getCommand(), "The scanned object is a plant.");
                 }
                 break;
@@ -380,17 +446,22 @@ public class CommandProcessor {
                 if (box.getWater() != null) {
                     terraBot.addToInventory(box.getWater());
                     box.getWater().setScannedTimestamp(Main.timestamp);
-                    terraBot.setEnergy(terraBot.getEnergy() - 7);
+                    terraBot.setEnergy(terraBot.getEnergy() - SEVEN);
                     return createNode(commandInput.getCommand(), "The scanned object is water.");
                 }
                 break;
         }
-        return createNode(commandInput.getCommand(), "ERROR: Object not found. Cannot perform action");
+        String out = "ERROR: Object not found. Cannot perform action";
+        return createNode(commandInput.getCommand(), out);
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     public void updateEnvironment() {
-        if (!simulationStarted)
+        if (!simulationStarted) {
             return;
+        }
         for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isPlant()) {
                 Box box = simulationMap.getBox(entity.getX(), entity.getY());
@@ -439,27 +510,37 @@ public class CommandProcessor {
             }
         }
     }
-
-    public ObjectNode learnFact(CommandInput commandInput) {
+    /**
+     * todo
+     * comentriu
+     */
+    public ObjectNode learnFact(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
         }
         if (terraBot.getEnergy() < 2) {
-            return createNode(commandInput.getCommand(), "ERROR: Not enough battery left. Cannot perform action");
+            String out = "ERROR: Not enough battery left. Cannot perform action";
+            return createNode(commandInput.getCommand(), out);
         }
         String scannedEntityName = commandInput.getComponents();
         if (!terraBot.hasEntityScanned(scannedEntityName)) {
-            return createNode(commandInput.getCommand(), "ERROR: Subject not yet saved. Cannot perform action");
+            String out = "ERROR: Subject not yet saved. Cannot perform action";
+            return createNode(commandInput.getCommand(), out);
         }
         terraBot.addFact(scannedEntityName, commandInput.getSubject());
         terraBot.setEnergy(terraBot.getEnergy() - 2);
-        return createNode(commandInput.getCommand(), "The fact has been successfully saved in the database.");
+        String out = "The fact has been successfully saved in the database.";
+        return createNode(commandInput.getCommand(), out);
     }
-
-    public ObjectNode printKnowledgeBase(CommandInput commandInput) {
+    /**
+     * todo
+     * comentriu
+     */
+    public ObjectNode printKnowledgeBase(final CommandInput commandInput) {
         if (!simulationStarted) {
-            return createNode(commandInput.getCommand(), "ERROR: Simulation not started. Cannot perform action");
+            String out = "ERROR: Simulation not started. Cannot perform action";
+            return createNode(commandInput.getCommand(), out);
         }
 
         ObjectNode objectNode = mapper.createObjectNode();
@@ -483,14 +564,18 @@ public class CommandProcessor {
         objectNode.put("timestamp", Main.timestamp);
         return objectNode;
     }
-
-    private ObjectNode improveEnvironment(CommandInput commandInput) {
+    /**
+     * todo
+     * comentriu
+     */
+    private ObjectNode improveEnvironment(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
         }
-        if (terraBot.getEnergy() < 10) {
-            return createNode(commandInput.getCommand(), "ERROR: Not enough battery left. Cannot perform action");
+        if (terraBot.getEnergy() < TEN) {
+            String out = "ERROR: Not enough battery left. Cannot perform action";
+            return createNode(commandInput.getCommand(), out);
         }
 
         String entityName = commandInput.getName();
@@ -499,14 +584,16 @@ public class CommandProcessor {
         Entity entity = terraBot.getEntityFromInventory(entityName);
 
         if (entity == null) {
-            return createNode(commandInput.getCommand(), "ERROR: Subject not yet saved. Cannot perform action");
+            String out = "ERROR: Subject not yet saved. Cannot perform action";
+            return createNode(commandInput.getCommand(), out);
         }
 
         if (!terraBot.hasFactsAbout(entityName)) {
-            return createNode(commandInput.getCommand(), "ERROR: Fact not yet saved. Cannot perform action");
+            String out = "ERROR: Fact not yet saved. Cannot perform action";
+            return createNode(commandInput.getCommand(), out);
         }
 
-        terraBot.setEnergy(terraBot.getEnergy() - 10);
+        terraBot.setEnergy(terraBot.getEnergy() - TEN);
         terraBot.removeFromInventory(entityName);
 
         Box box = simulationMap.getBox(terraBot.getX(),  terraBot.getY());
@@ -514,5 +601,4 @@ public class CommandProcessor {
         String outputMessage = entity.improveEnvironment(box, improvementType);
         return  createNode(commandInput.getCommand(), outputMessage);
     }
-
 }

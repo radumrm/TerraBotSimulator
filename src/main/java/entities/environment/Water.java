@@ -3,8 +3,16 @@ package entities.environment;
 import fileio.WaterInput;
 import entities.Entity;
 import lombok.Getter;
+import map.Box;
 
-import static utils.MagicNumber.*;
+import static utils.MagicNumber.ONE_HUNDRED;
+import static utils.MagicNumber.SEVEN_POINT_FIVE;
+import static utils.MagicNumber.D_350;
+import static utils.MagicNumber.POINT_THREE;
+import static utils.MagicNumber.POINT_TWO;
+import static utils.MagicNumber.POINT_ONE_FIVE;
+import static utils.MagicNumber.POINT_ONE;
+
 
 @Getter
 public class Water extends Entity {
@@ -15,7 +23,7 @@ public class Water extends Entity {
     private double pH;
     private boolean isFrozen;
 
-    public Water(WaterInput water) {
+    public Water(final WaterInput water) {
         super(water.getName(), water.getMass(), water.getType());
         this.purity = water.getPurity();
         this.salinity = water.getSalinity();
@@ -30,21 +38,23 @@ public class Water extends Entity {
      * comentriu
      */
     public double getWaterQuality() {
-        double purity_score = purity / ONE_HUNDRED;
-        double pH_score = 1 - Math.abs(pH - SEVEN_POINT_FIVE) / SEVEN_POINT_FIVE;
-        double salinity_score = 1 - (salinity / 350);
-        double turbidity_score = 1 - (turbidity / ONE_HUNDRED);
-        double contaminant_score = 1 - (contaminantIndex / ONE_HUNDRED);
-        double frozen_score = isFrozen ? 0 : 1;
-        double water_quality = POINT_THREE * purity_score + POINT_TWO * pH_score + POINT_ONE_FIVE * salinity_score + POINT_ONE * turbidity_score + POINT_ONE_FIVE * contaminant_score + POINT_TWO * frozen_score;
-        return water_quality * ONE_HUNDRED;
+        double purityScore = purity / ONE_HUNDRED;
+        double pHScore = 1 - Math.abs(pH - SEVEN_POINT_FIVE) / SEVEN_POINT_FIVE;
+        double salinityScore = 1 - (salinity / D_350);
+        double turbidityScore = 1 - (turbidity / ONE_HUNDRED);
+        double contaminantScore = 1 - (contaminantIndex / ONE_HUNDRED);
+        double frozenScore = isFrozen ? 0 : 1;
+        double waterQuality = POINT_THREE * purityScore + POINT_TWO * pHScore
+                + POINT_ONE_FIVE * salinityScore + POINT_ONE * turbidityScore
+                + POINT_ONE_FIVE * contaminantScore + POINT_TWO * frozenScore;
+        return waterQuality * ONE_HUNDRED;
     }
     /**
      * todo
      * comentriu
      */
     @Override
-    public String improveEnvironment(map.Box box, String improvementType) {
+    public String improveEnvironment(final Box box, final String improvementType) {
         if (improvementType.equals("increaseHumidity")) {
             box.getAir().setHumidity(box.getAir().getHumidity() + POINT_TWO);
             return "The humidity was successfully increased using " + this.name;
@@ -54,3 +64,4 @@ public class Water extends Entity {
         }
     }
 }
+

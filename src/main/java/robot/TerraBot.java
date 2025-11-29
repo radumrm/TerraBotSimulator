@@ -1,15 +1,15 @@
 package robot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import entities.Entity;
-import entities.animals.Animal;
 import entities.environment.Water;
 import entities.plants.Plant;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class TerraBot {
     private Map<String, List<String>> factsDataBase;
     private List<Entity> scannedEntities;
 
-    public TerraBot(int energy) {
+    public TerraBot(final int energy) {
         this.x = 0;
         this.y = 0;
         this.energy = energy;
@@ -30,17 +30,26 @@ public class TerraBot {
         this.factsDataBase = new HashMap<>();
         this.scannedEntities = new ArrayList<>();
     }
-
-    public boolean isCharging(int timestamp) {
+    /**
+     * todo
+     * comentriu
+     */
+    public boolean isCharging(final int timestamp) {
         return timestamp < finishedChargeTimestamp;
     }
-
-    public void recharge(int charge, int timestamp) {
+    /**
+     * todo
+     * comentriu
+     */
+    public void recharge(final int charge, final int timestamp) {
         energy += charge;
         finishedChargeTimestamp = timestamp + charge;
     }
-
-    public void addToInventory(Entity entity) {
+    /**
+     * todo
+     * comentriu
+     */
+    public void addToInventory(final Entity entity) {
         if (!inventory.contains(entity)) {
             inventory.add(entity);
         }
@@ -48,26 +57,35 @@ public class TerraBot {
             scannedEntities.add(entity);
         }
     }
-
-    public Water getWaterFromInventory(int x, int y) {
+    /**
+     * todo
+     * comentriu
+     */
+    public Water getWaterFromInventory(final int coordX, final int coordY) {
         for (Entity entity : inventory) {
-            if (entity.getX() == x && entity.getY() == y && entity.isWater()) {
+            if (entity.getX() == coordX && entity.getY() == coordY && entity.isWater()) {
                 return (Water) entity;
             }
         }
         return null;
     }
-
-    public Plant getPlantFromInventory(int x, int y) {
+    /**
+     * todo
+     * comentriu
+     */
+    public Plant getPlantFromInventory(final int coordX, final int coordY) {
         for (Entity entity : inventory) {
-            if (entity.getX() == x && entity.getY() == y && entity.isPlant()) {
+            if (entity.getX() == coordX && entity.getY() == coordY && entity.isPlant()) {
                 return (Plant) entity;
             }
         }
         return null;
     }
-
-    public boolean hasEntityScanned(String entityName) {
+    /**
+     * todo
+     * comentriu
+     */
+    public boolean hasEntityScanned(final String entityName) {
         for (Entity entity : inventory) {
             if (entity.getName().equals(entityName)) {
                 return true;
@@ -75,8 +93,11 @@ public class TerraBot {
         }
         return false;
     }
-
-    public void addFact(String entityName, String fact) {
+    /**
+     * todo
+     * comentriu
+     */
+    public void addFact(final String entityName, final String fact) {
         if (!factsDataBase.containsKey(entityName)) {
             factsDataBase.put(entityName, new ArrayList<>());
         }
@@ -85,13 +106,19 @@ public class TerraBot {
             facts.add(fact);
         }
     }
-
-    public boolean hasFactsAbout(String entityName) {
+    /**
+     * todo
+     * comentriu
+     */
+    public boolean hasFactsAbout(final String entityName) {
         List<String> facts = factsDataBase.get(entityName);
         return (facts != null)  && (!facts.isEmpty());
     }
-
-    public Entity getEntityFromInventory(String entityName) {
+    /**
+     * todo
+     * comentriu
+     */
+    public Entity getEntityFromInventory(final String entityName) {
         for (Entity entity : inventory) {
             if (entity.getName().equals(entityName)) {
                 return entity;
@@ -99,8 +126,11 @@ public class TerraBot {
         }
         return null;
     }
-
-    public void removeFromInventory(String name) {
+    /**
+     * todo
+     * comentriu
+     */
+    public void removeFromInventory(final String name) {
         Entity entity = getEntityFromInventory(name);
         if (entity != null) {
             inventory.remove(entity);

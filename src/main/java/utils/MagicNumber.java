@@ -1,7 +1,7 @@
 package utils;
 
 public final class MagicNumber {
-    private MagicNumber() {}
+    private MagicNumber() { }
 
     // Double Numbers
     public static final double D_350 = 350.0;
@@ -13,9 +13,11 @@ public final class MagicNumber {
     public static final double D_82 = 82.0;
     public static final double D_80 = 80.0;
     public static final double D_75 = 75.0;
+    public static final double D_70 = 70.0;
     public static final double SIXTY_FIVE = 65.0;
     public static final double SIXTY = 60.0;
     public static final double D_50 = 50.0;
+    public static final double D_40 = 40.0;
     public static final double THIRTY = 30.0;
     public static final double D_15 = 15.0;
     public static final double D_10 = 10.0;
@@ -45,6 +47,8 @@ public final class MagicNumber {
     public static final int ONE_THOUSAND = 1000;
     public static final int ONE_HUNDRED = 100;
     public static final int SEVENTY_EIGHT = 78;
+    public static final int TEN = 10;
+    public static final int SEVEN = 7;
     public static final int FOUR = 4;
     public static final int TWO = 2;
     public static final int MIN_TWO = -2;
