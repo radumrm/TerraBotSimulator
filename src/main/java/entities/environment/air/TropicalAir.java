@@ -11,6 +11,7 @@ public class TropicalAir extends Air {
     public TropicalAir(AirInput air) {
         super(air);
         setCo2Level(air.getCo2Level());
+        this.isTropicalAir = true;
     }
     @Override
     public double getAirQuality() {

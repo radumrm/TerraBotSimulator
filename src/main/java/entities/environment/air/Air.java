@@ -13,6 +13,11 @@ public abstract class Air extends Entity {
     protected double humidity;
     protected double temperature;
     protected double oxygenLevel;
+    boolean isDeserAir = false;
+    boolean isMountainAir = false;
+    boolean isPolarAir = false;
+    boolean isTemperateAir = false;
+    boolean isTropicalAir = false;
     public Air(AirInput air) {
         super(air.getName(), air.getMass(), air.getType());
         this.humidity = air.getHumidity();

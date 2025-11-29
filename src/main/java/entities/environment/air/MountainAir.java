@@ -11,6 +11,7 @@ public class MountainAir extends Air {
     public MountainAir(AirInput air) {
         super(air);
         this.altitude = air.getAltitude();
+        this.isMountainAir = true;
     }
     @Override
     public double getAirQuality() {

@@ -11,6 +11,7 @@ public class DesertAir extends Air {
     public DesertAir(AirInput air) {
         super(air);
         this.dustParticles = air.getDustParticles();
+        this.isDeserAir = true;
     }
     @Override
     public double getAirQuality() {

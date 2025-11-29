@@ -196,20 +196,14 @@ public class CommandProcessor {
                 sectionNode.add(y);
                 boxNode.set("section", sectionNode);
 
-                IO.println("pentru x=" + x + " y=" + y);
                 int count = 0;
-                if (box.getPlant() != null) {
+                if (box.getPlant() != null)
                     count++;
-                    IO.println("plant=" + box.getPlant().getName());
-                }
-                if (box.getAnimal() != null) {
+                if (box.getAnimal() != null)
                     count++;
-                    IO.println("animal=" + box.getAnimal().getName());
-                }
-                if (box.getWater() != null) {
+                if (box.getWater() != null)
                     count++;
-                    IO.println("water=" + box.getWater().getName());
-                }
+
                 boxNode.put("totalNrOfObjects", count);
 
                 double airQ = box.getAir().getAirQuality();
@@ -303,35 +297,35 @@ public class CommandProcessor {
                 Air air =  simulationMap.getBox(x, y).getAir();
                 switch (type) {
                     case "desertStorm":
-                        if (air instanceof DesertAir) {
+                        if (air.isDeserAir()) {
                             ((DesertAir) air).setDesertStorm();
                             typeFound = true;
                         }
                         break;
 
-                        case "rainfall":
-                        if (air instanceof TropicalAir) {
+                    case "rainfall":
+                        if (air.isTropicalAir()) {
                             ((TropicalAir) air).setRainfall(commandInput.getRainfall());
                             typeFound = true;
                         }
                         break;
 
-                        case "peopleHiking":
-                        if (air instanceof MountainAir) {
+                    case "peopleHiking":
+                        if (air.isMountainAir()) {
                             ((MountainAir) air).setNumberOfHikers(commandInput.getNumberOfHikers());
                             typeFound = true;
                         }
                         break;
 
-                        case "polarStorm":
-                        if (air instanceof PolarAir) {
+                    case "polarStorm":
+                        if (air.isPolarAir()) {
                             ((PolarAir) air).setWindSpeed(commandInput.getWindSpeed());
                             typeFound = true;
                         }
                         break;
 
-                        case "newSeason":
-                        if (air instanceof TemperateAir) {
+                    case "newSeason":
+                        if (air.isTemperateAir()) {
                             ((TemperateAir) air).setSeason(commandInput.getSeason());
                             typeFound = true;
                         }
@@ -437,7 +431,6 @@ public class CommandProcessor {
                 int age =  Main.timestamp - animal.getScannedTimestamp();
                 if (age % 2 == 0) {
                     animal.move(simulationMap, terraBot);
-                    // animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
                     simulationMap.getBox(animal.getX(), animal.getY()).setAnimal(animal);
                 }
             }

@@ -11,6 +11,7 @@ public class PolarAir extends Air {
     public PolarAir(AirInput air) {
         super(air);
         this.iceCrystalConcentration = air.getIceCrystalConcentration();
+        this.isPolarAir = true;
     }
     @Override
     public double getAirQuality() {

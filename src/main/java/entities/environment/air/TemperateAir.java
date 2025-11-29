@@ -11,6 +11,7 @@ public class TemperateAir extends Air {
     public TemperateAir(AirInput air) {
         super(air);
         this.pollenLevel = air.getPollenLevel();
+        this.isTemperateAir = true;
     }
     @Override
     public double getAirQuality() {
