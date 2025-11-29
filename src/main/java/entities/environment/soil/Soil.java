@@ -16,21 +16,33 @@ public abstract class Soil extends Entity {
     protected double soilpH;
     protected double organicMatter;
 
-    public Soil(SoilInput input) {
+    public Soil(final SoilInput input) {
         super(input.getName(), input.getMass(), input.getType());
         this.nitrogen = input.getNitrogen();
         this.waterRetention = input.getWaterRetention();
         this.soilpH = input.getSoilpH();
         this.organicMatter = input.getOrganicMatter();
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     public abstract double getSoilQuality();
-
-    public abstract double PossibilityToGetStuckInSoil();
-
+    /**
+     * todo
+     * comentriu
+     */
+    public abstract double possibilityToGetStuckInSoil();
+    /**
+     * todo
+     * comentriu
+     */
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
-
-    public void addOrganicMatter(double ammount) {
+    /**
+     * todo
+     * comentriu
+     */
+    public void addOrganicMatter(final double ammount) {
         this.organicMatter += ammount;
         this.organicMatter = Math.round(this.organicMatter * D_100) / D_100;
     }

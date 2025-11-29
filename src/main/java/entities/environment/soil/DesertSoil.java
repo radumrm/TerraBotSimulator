@@ -4,29 +4,42 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.SoilInput;
 import lombok.Getter;
 
-import static utils.MagicNumber.*;
+import static utils.MagicNumber.POINT_THREE;
+import static utils.MagicNumber.POINT_FIVE;
+import static utils.MagicNumber.D_100;
+import static utils.MagicNumber.ONE_HUNDRED;
+import static utils.MagicNumber.TWO;
 
 public class DesertSoil extends Soil {
     @Getter private double salinity;
-    public DesertSoil(SoilInput input) {
+    public DesertSoil(final SoilInput input) {
         super(input);
         this.salinity = input.getSalinity();
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getSoilQuality() {
         double soilQuality = (nitrogen * POINT_FIVE) + (waterRetention * POINT_THREE)
-                            - (salinity * 2);
+                            - (salinity * TWO);
         return normalizedAndRounded(soilQuality);
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public void addSpecificFieldsToNode(ObjectNode objectNode) {
+    public void addSpecificFieldsToNode(final ObjectNode objectNode) {
         objectNode.put("salinity", this.salinity);
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public double PossibilityToGetStuckInSoil() {
+    public double possibilityToGetStuckInSoil() {
         return (ONE_HUNDRED - waterRetention + salinity) / D_100 * ONE_HUNDRED;
     }
 }

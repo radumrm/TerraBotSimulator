@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
 
-import static utils.MagicNumber.*;
+import static utils.MagicNumber.POINT_ZERO_FIVE;
+import static utils.MagicNumber.ONE_HUNDRED;
+import static utils.MagicNumber.POINT_TWO;
+import static utils.MagicNumber.D_142;
 
 @Getter
 public class PolarAir extends Air {
@@ -21,7 +24,8 @@ public class PolarAir extends Air {
      */
     @Override
     public double getAirQuality() {
-        double airQuality = (oxygenLevel * 2) + (ONE_HUNDRED - Math.abs(temperature)) - (iceCrystalConcentration * POINT_ZERO_FIVE);
+        double airQuality = (oxygenLevel * 2) + (ONE_HUNDRED - Math.abs(temperature))
+        - (iceCrystalConcentration * POINT_ZERO_FIVE);
         double normAirQuality = normalizedAndRounded(airQuality);
         if (isWeatherChanged()) {
             return normAirQuality - windSpeed * POINT_TWO;
@@ -33,10 +37,10 @@ public class PolarAir extends Air {
      * comentriu
      */
     @Override
-    public void addSpecificFieldsToNode (ObjectNode objectNode) {
+    public void addSpecificFieldsToNode(final ObjectNode objectNode) {
         objectNode.put("iceCrystalConcentration", this.iceCrystalConcentration);
     }
-    protected static double maxScore = ONE_FOUR_TWO;
+    protected static double maxScore = D_142;
     /**
      * todo
      * comentriu

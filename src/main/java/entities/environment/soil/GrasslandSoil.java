@@ -4,29 +4,44 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.SoilInput;
 import lombok.Getter;
 
-import static utils.MagicNumber.*;
+import static utils.MagicNumber.ONE_POINT_THREE;
+import static utils.MagicNumber.ONE_POINT_FIVE;
+import static utils.MagicNumber.POINT_EIGHT;
+import static utils.MagicNumber.D_50;
+import static utils.MagicNumber.POINT_FIVE;
+import static utils.MagicNumber.D_75;
+import static utils.MagicNumber.ONE_HUNDRED;
 
 public class GrasslandSoil extends Soil {
     @Getter private double rootDensity;
-    public GrasslandSoil(SoilInput input) {
+    public GrasslandSoil(final SoilInput input) {
         super(input);
         this.rootDensity = input.getRootDensity();
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getSoilQuality() {
         double soilQuality = (nitrogen * ONE_POINT_THREE) + (organicMatter * ONE_POINT_FIVE)
-                            + (rootDensity * POINT_EIGHT);
+                + (rootDensity * POINT_EIGHT);
         return normalizedAndRounded(soilQuality);
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public void addSpecificFieldsToNode(ObjectNode objectNode) {
+    public void addSpecificFieldsToNode(final ObjectNode objectNode) {
         objectNode.put("rootDensity", this.rootDensity);
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public double PossibilityToGetStuckInSoil() {
-        return ((50 - rootDensity) + waterRetention * POINT_FIVE) / 75 * ONE_HUNDRED;
+    public double possibilityToGetStuckInSoil() {
+        return ((D_50 - rootDensity) + waterRetention * POINT_FIVE) / D_75 * ONE_HUNDRED;
     }
 }

@@ -20,7 +20,7 @@ public class Box {
     public int getCost() {
         double sum = 0.0;
         double count = 2.0;
-        sum += soil.PossibilityToGetStuckInSoil() + air.getToxicityAQ();
+        sum += soil.possibilityToGetStuckInSoil() + air.getToxicityAQ();
         if (animal != null) {
             sum += animal.possibilityToBeAttackedByAnimal();
             count++;

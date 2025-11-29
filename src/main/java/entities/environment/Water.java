@@ -1,12 +1,9 @@
 package entities.environment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import fileio.WaterInput;
 import entities.Entity;
 import lombok.Getter;
-import lombok.Setter;
 
-import static java.lang.Math.abs;
 import static utils.MagicNumber.*;
 
 @Getter
@@ -28,7 +25,10 @@ public class Water extends Entity {
         this.isFrozen = water.isFrozen();
         this.isWater = true;
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     public double getWaterQuality() {
         double purity_score = purity / ONE_HUNDRED;
         double pH_score = 1 - Math.abs(pH - SEVEN_POINT_FIVE) / SEVEN_POINT_FIVE;
@@ -39,7 +39,10 @@ public class Water extends Entity {
         double water_quality = POINT_THREE * purity_score + POINT_TWO * pH_score + POINT_ONE_FIVE * salinity_score + POINT_ONE * turbidity_score + POINT_ONE_FIVE * contaminant_score + POINT_TWO * frozen_score;
         return water_quality * ONE_HUNDRED;
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public String improveEnvironment(map.Box box, String improvementType) {
         if (improvementType.equals("increaseHumidity")) {

@@ -4,20 +4,29 @@ public final class MagicNumber {
     private MagicNumber() {}
 
     // Double Numbers
-    public static final double ONE_FOUR_TWO = 142.0;
+    public static final double D_350 = 350.0;
+    public static final double D_142 = 142.0;
     public static final double D_100 = 100.0;
     public static final double D_90 = 90.0;
     public static final double D_85 = 85.0;
+    public static final double D_84 = 84.0;
+    public static final double D_82 = 82.0;
+    public static final double D_80 = 80.0;
+    public static final double D_75 = 75.0;
     public static final double SIXTY_FIVE = 65.0;
     public static final double SIXTY = 60.0;
+    public static final double D_50 = 50.0;
     public static final double THIRTY = 30.0;
+    public static final double D_15 = 15.0;
     public static final double D_10 = 10.0;
     public static final double SEVEN_POINT_FIVE = 7.5;
     public static final double D_6 = 6.0;
+    public static final double FIVE = 5.0;
     public static final double D_3 = 3.0;
     public static final double TWO_POINT_TWO = 2.2;
     public static final double ONE_POINT_FIVE = 1.5;
     public static final double ONE_POINT_THREE = 1.3;
+    public static final double ONE_POINT_TWO = 1.2;
     public static final double ONE_POINT_ONE = 1.1;
     public static final double POINT_EIGHT = 0.8;
     public static final double POINT_SEVEN = 0.7;
@@ -37,5 +46,7 @@ public final class MagicNumber {
     public static final int ONE_HUNDRED = 100;
     public static final int SEVENTY_EIGHT = 78;
     public static final int FOUR = 4;
+    public static final int TWO = 2;
     public static final int MIN_TWO = -2;
+
 }

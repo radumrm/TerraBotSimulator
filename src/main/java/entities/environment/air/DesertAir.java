@@ -4,7 +4,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.AirInput;
 import lombok.Getter;
 
-import static utils.MagicNumber.*;
+import static utils.MagicNumber.POINT_TWO;
+import static utils.MagicNumber.POINT_THREE;
+import static utils.MagicNumber.THIRTY;
+import static utils.MagicNumber.ONE_HUNDRED;
+import static utils.MagicNumber.SIXTY_FIVE;
 
 @Getter
 public class DesertAir extends Air {
@@ -21,7 +25,8 @@ public class DesertAir extends Air {
      */
     @Override
     public double getAirQuality() {
-        double airQuality = (oxygenLevel * 2) - (dustParticles * POINT_TWO) - (temperature * POINT_THREE);
+        double airQuality = (oxygenLevel * 2) - (dustParticles * POINT_TWO)
+                - (temperature * POINT_THREE);
         double normAirQuality = normalizedAndRounded(airQuality);
         if (isWeatherChanged()) {
             return normAirQuality - THIRTY;
@@ -33,7 +38,7 @@ public class DesertAir extends Air {
      * comentriu
      */
     @Override
-    public void addSpecificFieldsToNode (final ObjectNode objectNode) {
+    public void addSpecificFieldsToNode(final ObjectNode objectNode) {
         objectNode.put("desertStorm", isWeatherChanged());
     }
     protected static double maxScore = SIXTY_FIVE;

@@ -4,29 +4,45 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.SoilInput;
 import lombok.Getter;
 
-import static utils.MagicNumber.*;
+import static utils.MagicNumber.POINT_THREE;
+import static utils.MagicNumber.ONE_POINT_TWO;
+import static utils.MagicNumber.ONE_POINT_FIVE;
+import static utils.MagicNumber.ONE_HUNDRED;
+import static utils.MagicNumber.TWO;
+import static utils.MagicNumber.POINT_SIX;
+import static utils.MagicNumber.POINT_FOUR;
+import static utils.MagicNumber.D_80;
 
 public class ForestSoil extends Soil {
     @Getter private double leafLitter;
-    public ForestSoil(SoilInput input) {
+    public ForestSoil(final SoilInput input) {
         super(input);
         this.leafLitter = input.getLeafLitter();
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
     public double getSoilQuality() {
-        double soilQuality = (nitrogen * 1.2) + (organicMatter * 2)
+        double soilQuality = (nitrogen * ONE_POINT_TWO) + (organicMatter * TWO)
                             + (waterRetention * ONE_POINT_FIVE) + (leafLitter * POINT_THREE);
         return normalizedAndRounded(soilQuality);
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public void addSpecificFieldsToNode(ObjectNode objectNode) {
+    public void addSpecificFieldsToNode(final ObjectNode objectNode) {
         objectNode.put("leafLitter", this.leafLitter);
     }
-
+    /**
+     * todo
+     * comentriu
+     */
     @Override
-    public double PossibilityToGetStuckInSoil() {
-        return (waterRetention * POINT_SIX + leafLitter * POINT_FOUR) / 80 * ONE_HUNDRED;
+    public double possibilityToGetStuckInSoil() {
+        return (waterRetention * POINT_SIX + leafLitter * POINT_FOUR) / D_80 * ONE_HUNDRED;
     }
 }
