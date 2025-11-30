@@ -66,7 +66,7 @@ public final class Main {
 
             if (resultNode != null) {
                 output.add(resultNode);
-                if (commandInput.getCommand().equals("endSimulation") && resultNode.has("message")
+                if (commandInput.getCommand().equals("endSimulation")
                         && resultNode.get("message").asText().equals("Simulation has ended.")) {
                     if (currentSimulation < simulations.size() - 1) {
                         currentSimulation++;
@@ -75,9 +75,7 @@ public final class Main {
                         nextProperties = newSimulationInput.getTerritorySectionParams();
                         simulationMap = new SimulationMap(newSimulationInput.getTerritoryDim());
                         simulationMap.populateMap(nextProperties);
-
                         terraBot = new TerraBot(newSimulationInput.getEnergyPoints());
-
                         processor = new CommandProcessor(simulationMap, terraBot);
                     }
                 }

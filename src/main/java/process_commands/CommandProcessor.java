@@ -313,7 +313,9 @@ public class CommandProcessor {
                 terraBot.setEnergy(terraBot.getEnergy() - bestScore);
                 terraBot.setX(newX);
                 terraBot.setY(newY);
-                return createNode(command, "The robot has successfully moved to position (" + newX + ", " + newY + ").");
+                String out = null;
+                out = "The robot has successfully moved to position (" + newX + ", " + newY + ").";
+                return createNode(command, out);
             } else {
                 return createNode(command, "ERROR: Not enough battery left. Cannot perform action");
             }
@@ -329,7 +331,8 @@ public class CommandProcessor {
         if (error != null) {
             return error;
         }
-        return  createNode(command, "TerraBot has " + terraBot.getEnergy() + " energy points left.");
+        String out = "TerraBot has " + terraBot.getEnergy() + " energy points left.";
+        return  createNode(command, out);
     }
     /**
      * todo
@@ -341,8 +344,9 @@ public class CommandProcessor {
             return error;
         }
         terraBot.recharge(commandInput.getTimeToCharge(), Main.timestamp);
-        for (int i = 0; i < commandInput.getTimeToCharge(); i++)
+        for (int i = 0; i < commandInput.getTimeToCharge(); i++) {
             updateEnvironment();
+        }
         return createNode(commandInput.getCommand(), "Robot battery is charging.");
     }
     /**
@@ -401,7 +405,9 @@ public class CommandProcessor {
         if (typeFound) {
             return createNode(commandInput.getCommand(), "The weather has changed.");
         }
-        return createNode(commandInput.getCommand(), "ERROR: The weather change does not affect the environment. Cannot perform action");
+        String out = null;
+        out = "ERROR: The weather change does not affect the environment. Cannot perform action";
+        return createNode(commandInput.getCommand(), out);
     }
     /**
      * todo
@@ -413,12 +419,14 @@ public class CommandProcessor {
             return error;
         }
         if (terraBot.getEnergy() < SEVEN) {
-            return createNode(commandInput.getCommand(), "ERROR: Not enough energy to perform action");
+            String out = "ERROR: Not enough energy to perform action";
+            return createNode(commandInput.getCommand(), out);
         }
         String scannedType = "";
         if (!commandInput.getSound().equals("none")) {
             scannedType = "animal";
-        } else if (!commandInput.getSmell().equals("none") || !commandInput.getColor().equals("none")) {
+        } else if (!commandInput.getSmell().equals("none")
+                || !commandInput.getColor().equals("none")) {
             scannedType = "plant";
         } else {
             scannedType = "water";
