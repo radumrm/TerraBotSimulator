@@ -40,8 +40,7 @@ public final class CreateEntity {
 
     private CreateEntity() { }
     /**
-     * todo
-     * comentriu
+     * Generam entitate tip air
      */
     public static Air createAir(final AirInput input) {
         return switch (input.getType()) {
@@ -54,8 +53,7 @@ public final class CreateEntity {
         };
     }
     /**
-     * todo
-     * comentriu
+     * Generam entitate tip soil
      */
     public static Soil createSoil(final SoilInput input) {
         return switch (input.getType()) {
@@ -68,15 +66,13 @@ public final class CreateEntity {
         };
     }
     /**
-     * todo
-     * comentriu
+     * Generam entitate tip water
      */
     public static Water createWater(final WaterInput input) {
         return new Water(input);
     }
     /**
-     * todo
-     * comentriu
+     * Generam entitate tip plant
      */
     public static Plant createPlant(final PlantInput input) {
         return switch (input.getType()) {
@@ -89,8 +85,7 @@ public final class CreateEntity {
         };
     }
     /**
-     * todo
-     * comentriu
+     * Generam entitate tip animal
      */
     public static Animal createAnimal(final AnimalInput input) {
         return switch (input.getType()) {

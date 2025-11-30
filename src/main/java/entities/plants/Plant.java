@@ -24,20 +24,17 @@ public abstract class Plant extends Entity {
         this.isPlant = true;
     }
     /**
-     * todo
-     * comentriu
+     * Returneaza posibilitatea plantei de a bloca robotul specifica tipului
      */
     public abstract double getPlantPossibility();
     /**
-     * todo
-     * comentriu
+     * Returneaza calculul posibilitatii
      */
     public double possibiltyToGetStuckInPlants() {
         return getPlantPossibility() / D_100;
     }
     /**
-     * todo
-     * comentriu
+     * Functie de maturizare a plantei pentru fiecare iteratie
      */
     public void grow() {
         if (!isDead()) {
@@ -47,20 +44,17 @@ public abstract class Plant extends Entity {
         }
     }
     /**
-     * todo
-     * comentriu
+     * Verificare daca planta e moarta
      */
     public boolean isDead() {
         return maturity >= D_3;
     }
     /**
-     * todo
-     * comentriu
+     * Returneaza oxigenul plantei in functie de tipul plantei
      */
     public abstract double getOxygenFromPlant();
     /**
-     * todo
-     * comentriu
+     * Calculeaza maturitatea
      */
     public double maturityOxygenRate() {
         if (maturity < 1.0) {
@@ -73,8 +67,7 @@ public abstract class Plant extends Entity {
         return 0;
     }
     /**
-     * todo
-     * comentriu
+     * Calcului oxygenLevel-ului
      */
     public double oxygenLevel() {
         if (isDead()) {
@@ -83,8 +76,7 @@ public abstract class Plant extends Entity {
         return maturityOxygenRate() + getOxygenFromPlant();
     }
     /**
-     * todo
-     * comentriu
+     * Functie de improve env
      */
     @Override
     public String improveEnvironment(final Box box, final String improvementType) {

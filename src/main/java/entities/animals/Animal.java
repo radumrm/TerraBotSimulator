@@ -35,20 +35,18 @@ public abstract class Animal extends Entity {
         this.isAnimal = true;
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce probabilitatea de a ataca specifica tipului de animal
      */
     public abstract double getAnimalPossibilityToAttack();
     /**
-     * todo
-     * comentriu
+     * Aplica formula pentru determinarea posibilitatii de atac a robotului
      */
     public double possibilityToBeAttackedByAnimal() {
         return (ONE_HUNDRED - this.getAnimalPossibilityToAttack()) / D_10;
     }
     /**
-     * todo
-     * comentriu
+     * Sterge animalul de pe patratica veche si ii da alte coordonate, se va pune
+     * iar pe o casuta din harta in commandProcessor
      */
     private void executeMove(final SimulationMap simulationMap, final int newX, final int newY) {
         simulationMap.getBox(this.x, this.y).setAnimal(null);
@@ -60,24 +58,27 @@ public abstract class Animal extends Entity {
 
     private int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
     /**
-     * todo
-     * comentriu
+     * Algoritm pentru determinarea si mutarea animalului pe noua pozitie ca in cerinta
+     * plus verificarea ca un alt animal sa nu fie deja acolo
      */
     public void move(final SimulationMap simulationMap, final TerraBot terraBot) {
+        // Index curent al pozitiei animalului
         int currentX = this.getX();
         int currentY = this.getY();
         int width = simulationMap.getWidth();
         int height = simulationMap.getHeight();
-
+        // Index nou
         int newX = -1;
         int newY = -1;
         double maxWaterQuality = -1;
 
-        // Generating water and plant lists for every neighbour in the right order
+        // Vom genera 2 liste, fiecare cu 4 elemente, primul element corespune primului vecin
+        // in oridea cautarii, ultimul element corespune ultimului vecin in ordinea cautarii
+        // Daca un vecin este out of bounds, adaugam null in lista pentru a pastra ordinea
         List<Water> waterList = new ArrayList<Water>();
         List<Plant> plantList = new ArrayList<Plant>();
 
-        // Populating the lists
+        // Popularea listelor
         for (int[] direction : directions) {
             int auxX = currentX + direction[0];
             int auxY = currentY + direction[1];
@@ -85,13 +86,14 @@ public abstract class Animal extends Entity {
                 waterList.add(terraBot.getWaterFromInventory(auxX, auxY));
                 plantList.add(terraBot.getPlantFromInventory(auxX, auxY));
             } else {
-                // If out of bound add null to preserve correct movement order
+                // Adaugare vecin out of bounds pentru ordine
                 waterList.add(null);
                 plantList.add(null);
             }
         }
 
-        // Checking to see if we have a neighbour with a scanned plant and a scanned water
+        // Primul tip de verificare apa + planta si mergem dupa Max(WaterQuality)
+        // Si verificam sa nu fie un animal pe noua casuta
         for (int i = 0; i < FOUR; i++) {
             int auxX = currentX + directions[i][0];
             int auxY = currentY + directions[i][1];
@@ -104,12 +106,13 @@ public abstract class Animal extends Entity {
                 }
             }
         }
+        // Verificam daca am gasit o noua pozitie potrivita si mutam animalul
         if (newX != -1 && newY != -1) {
             executeMove(simulationMap, newX, newY);
             return;
         }
 
-        // Checking to see if we have a neighbour with a scanned plant
+        // Verificare planta (prima in ordinea parcurgerii)
         for (int i = 0; i < FOUR; i++) {
             int auxX = currentX + directions[i][0];
             int auxY = currentY + directions[i][1];
@@ -121,7 +124,7 @@ public abstract class Animal extends Entity {
             }
         }
 
-        // Checking to see if we have a neighbour with a scanned water
+        // Verificare apa, ne mutam dupa maxWaterQuality
         for (int i = 0; i < FOUR; i++) {
             int auxX = currentX + directions[i][0];
             int auxY = currentY + directions[i][1];
@@ -132,12 +135,13 @@ public abstract class Animal extends Entity {
                 maxWaterQuality = waterList.get(i).getWaterQuality();
             }
         }
+        // Verificam vecin valid
         if (newX != -1 && newY != -1) {
             executeMove(simulationMap, newX, newY);
             return;
         }
 
-        // Going to the first in bounds neighbour
+        // Mergem la primul vecin valabil (in ordinea cautarii)
         for (int i = 0; i < FOUR; i++) {
             int auxX = currentX + directions[i][0];
             int auxY = currentY + directions[i][1];
@@ -151,25 +155,26 @@ public abstract class Animal extends Entity {
 
     private boolean isDead = false;
     /**
-     * todo
-     * comentriu
+     * Setem animalul dead pentru a nu mai face update la env
      */
     public void setDead() {
         this.isDead = true;
     }
     /**
-     * todo
-     * comentriu
+     * Algoritm de mancare doar pentru apa si planta
      */
     protected void eatPlantOrWater(final Box box) {
+        // Variabile in care stocam daca s-a mancat planta sau baut apa scanata
+        // Pentru a stii cat organicMatter ii dam soil-ului
         boolean canEatPlant = false;
         boolean canEatWater = false;
+        // Verificare + mancare planta
         if (box.getPlant() != null && box.getPlant().isScanned()) {
             this.mass += box.getPlant().getMass();
             box.setPlant(null);
             canEatPlant = true;
         }
-
+        // Verificare + baut apa
         if (box.getWater() != null && box.getWater().isScanned()) {
             double intakeRate = POINT_ZERO_EIGHT;
             double waterMass = box.getWater().getMass();
@@ -182,7 +187,7 @@ public abstract class Animal extends Entity {
             }
             canEatWater = true;
         }
-
+        // Verificare adaugare organicMatter
         if (canEatWater && canEatPlant) {
             box.getSoil().addOrganicMatter(POINT_EIGHT);
         } else if (canEatWater || canEatPlant) {
@@ -190,13 +195,11 @@ public abstract class Animal extends Entity {
         }
     }
     /**
-     * todo
-     * comentriu
+     * Metoda mostenita de toate animalele pentru a manca
      */
     public abstract void eat(Box box);
     /**
-     * todo
-     * comentriu
+     * Metoda pentru improveEnv
      */
     @Override
     public String improveEnvironment(final Box box, final String improvementType) {

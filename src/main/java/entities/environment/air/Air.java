@@ -17,6 +17,8 @@ public abstract class Air extends Entity {
     protected double humidity;
     protected double temperature;
     protected double oxygenLevel;
+    // Nu am invatat pana acum 2 zile cum se face Double dispatch asa ca am aceste
+    // variabile pentru a evita folosirea lui instaceof, nu mai am timp sa modific
     protected boolean isDeserAir = false;
     protected boolean isMountainAir = false;
     protected boolean isPolarAir = false;
@@ -29,47 +31,42 @@ public abstract class Air extends Entity {
         this.oxygenLevel = air.getOxygenLevel();
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce airQuality in functie de tipul plantei
      */
     public abstract double getAirQuality();
     /**
-     * todo
-     * comentriu
+     * Intoarce maxScore in functie de tipul plantei
      */
     public abstract double getMaxScore();
     /**
-     * todo
-     * comentriu
+     * Calcularea a toxicitatii, si verificarea de a nu fi negativa
      */
     public double getToxicityAQ() {
         double toxicityAQ = ONE_HUNDRED * (1 - getAirQuality() /  getMaxScore());
         return Math.max(0.0, Math.round(toxicityAQ * D_100) / D_100);
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru afisarea variabilei specifice tipului de planta
      */
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
 
+    // Tine minte cand a inceput schimbarea vremii
+    // Initializara cu -2 pentru a nu avea probleme la timestamp 1
     protected int startChangeWeatherTimestamp = MIN_TWO;
     /**
-     * todo
-     * comentriu
+     * Functie pentru setarea variabilelei de startChangeWeatherTimestamp
      */
     public void changeWeather() {
         startChangeWeatherTimestamp = Main.timestamp;
     }
     /**
-     * todo
-     * comentriu
+     * Verificare daca vremea inca mai este schimbata
      */
     public boolean isWeatherChanged() {
         return (Main.timestamp - startChangeWeatherTimestamp) < 2;
     }
     /**
-     * todo
-     * comentriu
+     * Marirea nivelului de oxygen
      */
     public void addOxygenLevel(final double level) {
         this.oxygenLevel += level;

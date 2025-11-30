@@ -20,8 +20,7 @@ public class Box {
     private Animal animal;
 
     /**
-     * todo
-     * comentriu
+     * Calculam costul de miscare pe o celula vecina
      */
     public int getCost() {
         double sum = 0.0;

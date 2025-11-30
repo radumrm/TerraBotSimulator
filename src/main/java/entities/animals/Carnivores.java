@@ -12,16 +12,14 @@ public class Carnivores extends  Animal {
         super(input);
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce probabilitatea de a ataca specifica tipului de animal
      */
     @Override
     public double getAnimalPossibilityToAttack() {
         return animalPossibilityToAttack;
     }
     /**
-     * todo
-     * comentriu
+     * Algoritm mancare pentru animal care poate manca alte animale
      */
     @Override
     public void eat(final Box box) {

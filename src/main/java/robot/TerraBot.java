@@ -17,9 +17,15 @@ public class TerraBot {
     private int x;
     private int y;
     private int energy;
+    // Stocam timpul la care s-a terminat incarcarea
     private int finishedChargeTimestamp = 0;
+    // Inventar
     private List<Entity> inventory;
+    // Pe langa inventar avem un Map care tine corespondenta dintre numele unei enititati
+    // scanate si lista de fact-uri pe care o avem despre aceasta
     private Map<String, List<String>> factsDataBase;
+    // Lista cu entitatiile scanate, ne trebuie deoarece din inventar o sa mai scoatem entitati
+    // pentru care o sa trebuiasca sa dam updateEnv, printKnowledge ...
     private List<Entity> scannedEntities;
 
     public TerraBot(final int energy) {
@@ -31,23 +37,21 @@ public class TerraBot {
         this.scannedEntities = new ArrayList<>();
     }
     /**
-     * todo
-     * comentriu
+     * Verificam daca se incarca
      */
     public boolean isCharging(final int timestamp) {
         return timestamp < finishedChargeTimestamp;
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru a incarca robotul
      */
     public void recharge(final int charge, final int timestamp) {
         energy += charge;
         finishedChargeTimestamp = timestamp + charge;
     }
     /**
-     * todo
-     * comentriu
+     * Funtie pentru a adauga in inventar un obiect scanat
+     * DAR si in scannedEntities
      */
     public void addToInventory(final Entity entity) {
         if (!inventory.contains(entity)) {
@@ -58,8 +62,7 @@ public class TerraBot {
         }
     }
     /**
-     * todo
-     * comentriu
+     * Returnam water daca avem in inventar apa scnata la coordonatele x si y
      */
     public Water getWaterFromInventory(final int coordX, final int coordY) {
         for (Entity entity : inventory) {
@@ -70,8 +73,7 @@ public class TerraBot {
         return null;
     }
     /**
-     * todo
-     * comentriu
+     * Returnam plant daca avem in inventar plant scnata la coordonatele x si y
      */
     public Plant getPlantFromInventory(final int coordX, final int coordY) {
         for (Entity entity : inventory) {
@@ -82,8 +84,7 @@ public class TerraBot {
         return null;
     }
     /**
-     * todo
-     * comentriu
+     * Verificare daca o entitate a fost scanata
      */
     public boolean hasEntityScanned(final String entityName) {
         for (Entity entity : inventory) {
@@ -94,8 +95,7 @@ public class TerraBot {
         return false;
     }
     /**
-     * todo
-     * comentriu
+     * Adaugam un fact pentru o entitate scanata (dupa nume)
      */
     public void addFact(final String entityName, final String fact) {
         if (!factsDataBase.containsKey(entityName)) {
@@ -107,16 +107,14 @@ public class TerraBot {
         }
     }
     /**
-     * todo
-     * comentriu
+     * Returnam daca avem un fact pentru o entitate cu un nume specific
      */
     public boolean hasFactsAbout(final String entityName) {
         List<String> facts = factsDataBase.get(entityName);
         return (facts != null)  && (!facts.isEmpty());
     }
     /**
-     * todo
-     * comentriu
+     * Returnam entitatea din inventar daca exista
      */
     public Entity getEntityFromInventory(final String entityName) {
         for (Entity entity : inventory) {
@@ -127,8 +125,7 @@ public class TerraBot {
         return null;
     }
     /**
-     * todo
-     * comentriu
+     * Scoatem entitatea din inventar(pentru cand dam improve)
      */
     public void removeFromInventory(final String name) {
         Entity entity = getEntityFromInventory(name);

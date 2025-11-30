@@ -33,15 +33,13 @@ public class SimulationMap {
         }
     }
     /**
-     * todo
-     * comentriu
+     * Returneaza box-ul din mapa de la coordonatele x si y
      */
     public Box getBox(final int x, final int y) {
         return map[x][y];
     }
     /**
-     * todo
-     * comentriu
+     * Populam harta cu parametrii de input
      */
     public void populateMap(final TerritorySectionParamsInput proprieties) {
         if (proprieties.getSoil() != null) {

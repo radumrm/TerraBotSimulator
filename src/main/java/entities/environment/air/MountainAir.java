@@ -22,8 +22,7 @@ public class MountainAir extends Air {
         super.isMountainAir = true;
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce airQuality in functie de tipul plantei si de starea vremii
      */
     @Override
     public double getAirQuality() {
@@ -36,8 +35,7 @@ public class MountainAir extends Air {
         return Math.min(normAirQuality, ONE_HUNDRED);
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru afisarea variabilei specifice tipului de planta
      */
     @Override
     public void addSpecificFieldsToNode(final ObjectNode objectNode) {
@@ -45,16 +43,14 @@ public class MountainAir extends Air {
     }
     protected static double maxScore = SEVENTY_EIGHT;
     /**
-     * todo
-     * comentriu
+     * Intoarce maxScore in functie de tipul plantei
      */
     @Override
     public double getMaxScore() {
         return maxScore;
     }
     /**
-     * todo
-     * comentriu
+     * Seteaza change weather pentru MountainAir
      */
     public void setNumberOfHikers(final int numberOfHikers) {
         this.numberOfHikers = numberOfHikers;

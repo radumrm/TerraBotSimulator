@@ -21,8 +21,7 @@ public class TemperateAir extends Air {
         super.isTemperateAir = true;
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce airQuality in functie de tipul plantei si de starea vremii
      */
     @Override
     public double getAirQuality() {
@@ -36,8 +35,7 @@ public class TemperateAir extends Air {
         return Math.min(normAirQuality, ONE_HUNDRED);
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru afisarea variabilei specifice tipului de planta
      */
     @Override
     public void addSpecificFieldsToNode(final ObjectNode objectNode) {
@@ -45,16 +43,14 @@ public class TemperateAir extends Air {
     }
     protected static double maxScore = D_84;
     /**
-     * todo
-     * comentriu
+     * Intoarce maxScore in functie de tipul plantei
      */
     @Override
     public double getMaxScore() {
         return maxScore;
     }
     /**
-     * todo
-     * comentriu
+     * Seteaza change weather pentru TemperateAir
      */
     public void setSeason(final String season) {
         this.season = season;

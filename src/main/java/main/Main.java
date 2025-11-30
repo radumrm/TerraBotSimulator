@@ -39,38 +39,47 @@ public final class Main {
 
         InputLoader inputLoader = new InputLoader(inputPath);
         ArrayNode output = MAPPER.createArrayNode();
-
+        // Stocam atat comenzile cat si simulatiile in liste
         List<CommandInput> commands = inputLoader.getCommands();
         List<SimulationInput> simulations = inputLoader.getSimulations();
-
+        // Indexul simularii curente, il vom folosii pentru a calcula daca
+        // mai exista inca o simulare dupa cea curenta
         int currentSimulation = 0;
-
+        // Luam simularea curenta de la indexul nostru
         SimulationInput simulationInput = simulations.get(currentSimulation);
+        // Luam parametrii acesteia
         TerritorySectionParamsInput territoryParams = simulationInput.getTerritorySectionParams();
-
+        // Initializam harta curenta si o populam
         SimulationMap simulationMap = new SimulationMap(simulationInput.getTerritoryDim());
         simulationMap.populateMap(territoryParams);
-
-        // Initializing the robot
+        // Inializam robotul
         TerraBot terraBot = new TerraBot(simulationInput.getEnergyPoints());
-        // Initializing the command processor
+        // Initializam procesorul de comenzi
         CommandProcessor processor = new CommandProcessor(simulationMap, terraBot);
 
         for (CommandInput commandInput : commands) {
-            // Update the timestamp at every new command
+            // Update la timestamp pentru fiecare comanda
             timestamp = commandInput.getTimestamp();
-            // Update Env
+            // Update la env
             processor.updateEnvironment();
-            // Executing the command and storing the output to ObjectNode
+            // Executam comanda si pastram out-ul comenzii curente in resultNode
             ObjectNode resultNode = processor.processCommand(commandInput);
-
+            // Verificam daca comanda s-a procesat corect
             if (resultNode != null) {
+                // Adaugam la out-ul programului, out-ul comezii curente
                 output.add(resultNode);
+                // Verificam daca am primit comanda endSimulation si aceasta
+                // a returnat mesajul valid: Simulation has ended.
                 if (commandInput.getCommand().equals("endSimulation")
                         && resultNode.get("message").asText().equals("Simulation has ended.")) {
+                    // Verificam daca mai exista cel putin inca o simulare dispoinibila
                     if (currentSimulation < simulations.size() - 1) {
+                        // Daca exista, incrementam counterul
                         currentSimulation++;
+                        // Stocam noua simulare din siluations in newSimulationInput
                         SimulationInput newSimulationInput = simulations.get(currentSimulation);
+                        // Generam si reinitializam iar proprietatiile, harta, robotul si
+                        // commandProcessorul
                         TerritorySectionParamsInput nextProperties = null;
                         nextProperties = newSimulationInput.getTerritorySectionParams();
                         simulationMap = new SimulationMap(newSimulationInput.getTerritoryDim());

@@ -34,8 +34,7 @@ public class Water extends Entity {
         this.isWater = true;
     }
     /**
-     * todo
-     * comentriu
+     * Returneaza waterQuality
      */
     public double getWaterQuality() {
         double purityScore = purity / ONE_HUNDRED;
@@ -50,8 +49,7 @@ public class Water extends Entity {
         return waterQuality * ONE_HUNDRED;
     }
     /**
-     * todo
-     * comentriu
+     * Functie de improve env in functie de tipul improvement-ului
      */
     @Override
     public String improveEnvironment(final Box box, final String improvementType) {

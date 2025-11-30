@@ -17,8 +17,7 @@ public class SwampSoil extends Soil {
         this.waterLogging = input.getWaterLogging();
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce soilQuality in functie de tipul solului
      */
     @Override
     public double getSoilQuality() {
@@ -27,16 +26,14 @@ public class SwampSoil extends Soil {
         return normalizedAndRounded(soilQuality);
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru afisarea variabilei specifice tipului de soil
      */
     @Override
     public void addSpecificFieldsToNode(final ObjectNode objectNode) {
         objectNode.put("waterLogging", this.waterLogging);
     }
     /**
-     * todo
-     * comentriu
+     * Calculeaza posibilitatea de a ramane blocat in soil in functie de tipul solului
      */
     @Override
     public double possibilityToGetStuckInSoil() {

@@ -22,8 +22,7 @@ public class TropicalAir extends Air {
         super.isTropicalAir = true;
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce airQuality in functie de tipul plantei si de starea vremii
      */
     @Override
     public double getAirQuality() {
@@ -36,8 +35,7 @@ public class TropicalAir extends Air {
         return Math.min(normAirQuality, ONE_HUNDRED);
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru afisarea variabilei specifice tipului de planta
      */
     @Override
     public void addSpecificFieldsToNode(final ObjectNode objectNode) {
@@ -45,24 +43,21 @@ public class TropicalAir extends Air {
     }
     protected static double maxScore = D_82;
     /**
-     * todo
-     * comentriu
+     * Intoarce maxScore in functie de tipul plantei
      */
     @Override
     public double getMaxScore() {
         return maxScore;
     }
     /**
-     * todo
-     * comentriu
+     * Seteaza change weather pentru tropicalAir
      */
     public void setRainfall(final double rainfall) {
         this.rainfall = rainfall;
         changeWeather();
     }
     /**
-     * todo
-     * comentriu
+     * Seteaza noul nivel de co2
      */
     public void  setCo2Level(final double co2Level) {
         this.co2Level = Math.round(co2Level * D_100) / D_100;

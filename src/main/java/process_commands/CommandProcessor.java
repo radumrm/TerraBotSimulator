@@ -26,7 +26,11 @@ import static utils.MagicNumber.D_40;
 import static utils.MagicNumber.D_70;
 import static utils.MagicNumber.TEN;
 import static utils.MagicNumber.SEVEN;
-
+/**
+ * Functia in care se deruleaza toate comenziile din program
+ * toate comenziile vor returna un ObjectNode care este primit
+ * in main si adaugat la ouput pentru afisarea mesajelor
+ */
 public class CommandProcessor {
     private final SimulationMap simulationMap;
     private final TerraBot terraBot;
@@ -40,8 +44,7 @@ public class CommandProcessor {
         this.mapper = new ObjectMapper();
     }
     /**
-     * todo
-     * comentriu
+     * Apeleaza metoda aferenta comenzii si returneaza out-ul acesteia
      */
     public ObjectNode processCommand(final CommandInput commandInput) {
         String command = commandInput.getCommand();
@@ -62,8 +65,7 @@ public class CommandProcessor {
         };
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru creare a unui ObjectNode pentru comanda si out-ul acesteia
      */
     private ObjectNode createNode(final String command, final String message) {
         ObjectNode objectNode = mapper.createObjectNode();
@@ -73,8 +75,7 @@ public class CommandProcessor {
         return objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Helper pentru printMap si printEnv al lui Soil
      */
     private ObjectNode createSoilNode(final Soil soil) {
         ObjectNode objectNode = mapper.createObjectNode();
@@ -90,8 +91,7 @@ public class CommandProcessor {
         return objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Helper pentru printMap si printEnv al lui Air
      */
     private ObjectNode createAirNode(final Air air) {
         ObjectNode objectNode = mapper.createObjectNode();
@@ -106,8 +106,7 @@ public class CommandProcessor {
         return objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Helper pentru printMap si printEnv al lui Plant
      */
     private ObjectNode createPlantNode(final Plant plant) {
         ObjectNode objectNode = mapper.createObjectNode();
@@ -117,8 +116,7 @@ public class CommandProcessor {
         return  objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Helper pentru printMap si printEnv al lui Water
      */
     private ObjectNode createWaterNode(final Water water) {
         ObjectNode objectNode = mapper.createObjectNode();
@@ -128,8 +126,7 @@ public class CommandProcessor {
         return  objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Helper pentru printMap si printEnv al lui Animal
      */
     private ObjectNode createAnimalNode(final Animal animal) {
         ObjectNode objectNode = mapper.createObjectNode();
@@ -139,8 +136,7 @@ public class CommandProcessor {
         return  objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Lipim 2 cele mai frecvente erori intr-o metoda pentru modularizare
      */
     private ObjectNode checkStartAndCharge(final String command) {
         if (!simulationStarted) {
@@ -152,8 +148,7 @@ public class CommandProcessor {
         return null;
     }
     /**
-     * todo
-     * comentriu
+     * Helper pentru afisare al calitatii
      */
     private String getQualityAsString(final double quality) {
         if (quality >= D_70) {
@@ -164,8 +159,8 @@ public class CommandProcessor {
         return "poor";
     }
     /**
-     * todo
-     * comentriu
+     * Metoda pentru procesarea comenzii startSimulations
+     * seteaza simulationStarted ca true
      */
     private ObjectNode startSimulation(final String command) {
         if (simulationStarted) {
@@ -175,8 +170,8 @@ public class CommandProcessor {
         return createNode(command, "Simulation has started.");
     }
     /**
-     * todo
-     * comentriu
+     * Metoda pentru procesarea comenzii endSimulations
+     * seteaza simulationStarted ca false
      */
     private ObjectNode endSimulation(final String command) {
         if (!simulationStarted) {
@@ -186,8 +181,8 @@ public class CommandProcessor {
         return createNode(command, "Simulation has ended.");
     }
     /**
-     * todo
-     * comentriu
+     * Metoda pentru printEnvConditions, printeaza proprietatiile box-ului
+     * pe care este aflat robotul
      */
     private ObjectNode printEnvConditions(final String command) {
         ObjectNode error = checkStartAndCharge(command);
@@ -222,8 +217,7 @@ public class CommandProcessor {
         return objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Metoda pentru printMap, printeaza proprietatiile intregii mape
      */
     private ObjectNode printMap(final String command) {
         ObjectNode error = checkStartAndCharge(command);
@@ -274,33 +268,36 @@ public class CommandProcessor {
         return objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru miscare a robotului
      */
     private ObjectNode moveRobot(final String command) {
         ObjectNode error = checkStartAndCharge(command);
         if (error != null) {
             return error;
         }
+        // Coordonatele curente
         int x = this.terraBot.getX();
         int y = this.terraBot.getY();
         int height = simulationMap.getHeight();
         int width = simulationMap.getWidth();
 
-        // Up Right Down Left
+        // Directiile de mers in ordine
         int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
+        // Noile coordonate
         int newX = -1;
         int newY = -1;
+        // bestScore sa calculam pe ce celula vom merge, pe cea cu cel mai mic scor
         int bestScore = Integer.MAX_VALUE;
-
+        // Pentru fiecare dintre cele 4 verificam
         for (int[] direction : directions) {
             int auxX = x + direction[0];
             int auxY = y + direction[1];
-
+            // Verificam daca nu este out of bounds
             if (auxX >= 0 && auxX < width && auxY >= 0 && auxY < height) {
                 Box auxBox = simulationMap.getBox(auxX, auxY);
                 int score = auxBox.getCost();
+                // Verificam daca costul este mao bun
                 if (score < bestScore) {
                     bestScore = score;
                     newX = auxX;
@@ -308,8 +305,11 @@ public class CommandProcessor {
                 }
             }
         }
+        // Verificam daca am gasit unde sa ne mutam (mereu o sa gasim)
         if (newX != -1) {
+            // Verificam daca avem baterie destula
             if (terraBot.getEnergy() >= bestScore) {
+                // Daca avem ne mutam
                 terraBot.setEnergy(terraBot.getEnergy() - bestScore);
                 terraBot.setX(newX);
                 terraBot.setY(newY);
@@ -323,8 +323,7 @@ public class CommandProcessor {
         return null;
     }
     /**
-     * todo
-     * comentriu
+     * Returneaza energia curenta a robotului
      */
     private ObjectNode getEnergyStatus(final String command) {
         ObjectNode error = checkStartAndCharge(command);
@@ -335,8 +334,10 @@ public class CommandProcessor {
         return  createNode(command, out);
     }
     /**
-     * todo
-     * comentriu
+     * Incarca robotul, seteaza noul finishedChargeTimetamp
+     * SI!!! pentru timpul ramas intre timestamp-ul curent si
+     * timestamp-ul la care va putea sa proceseze iar comenzi
+     * facem update la env
      */
     private ObjectNode rechargeBattery(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
@@ -350,8 +351,7 @@ public class CommandProcessor {
         return createNode(commandInput.getCommand(), "Robot battery is charging.");
     }
     /**
-     * todo
-     * comentriu
+     * Schimbam vremea in functie de tipul parametriilor de comanda
      */
     private ObjectNode changeWeatherConditions(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
@@ -361,6 +361,8 @@ public class CommandProcessor {
 
         String type = commandInput.getType();
         boolean typeFound = false;
+        // Cum am zis si mai sus, ca sa nu folosesc instaceof, am folosit metodele isAirType
+        // nu mai am timp sa fac Double dispatch
         for (int y = 0; y < simulationMap.getHeight(); y++) {
             for (int x = 0; x < simulationMap.getWidth(); x++) {
                 Air air =  simulationMap.getBox(x, y).getAir();
@@ -410,18 +412,19 @@ public class CommandProcessor {
         return createNode(commandInput.getCommand(), out);
     }
     /**
-     * todo
-     * comentriu
+     * Scanam o entitate de tip plant, water sau animal
      */
     private ObjectNode scanObject(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
         }
+        // Verificam daca avem destula energie
         if (terraBot.getEnergy() < SEVEN) {
             String out = "ERROR: Not enough energy to perform action";
             return createNode(commandInput.getCommand(), out);
         }
+        // Determinam ce fel de tip este entitatea
         String scannedType = "";
         if (!commandInput.getSound().equals("none")) {
             scannedType = "animal";
@@ -431,6 +434,8 @@ public class CommandProcessor {
         } else {
             scannedType = "water";
         }
+        // Dupa ce am determinat ce tip este, luam patratica curenta unde s-a produs
+        // scanarea si verificam si daca exista acel obiect in patratica
         Box box = simulationMap.getBox(terraBot.getX(),  terraBot.getY());
         switch (scannedType) {
             case "animal":
@@ -459,17 +464,20 @@ public class CommandProcessor {
                 }
                 break;
         }
+        // Daca s-a ajuns aici, obiectul pe care l-am scanat nu se afla defapt pe patratica
         String out = "ERROR: Object not found. Cannot perform action";
         return createNode(commandInput.getCommand(), out);
     }
     /**
-     * todo
-     * comentriu
+     * Functia de updateEnv pentru entitatiile scanate de tip water, plant si animal
+     * In ordinea in care au loc interactiuniile
      */
     public void updateEnvironment() {
         if (!simulationStarted) {
             return;
         }
+        // Pentru plant, apelam grow si determinam daca poate da oxigen aerului sau moare
+        // La fiecare iteratie
         for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isPlant()) {
                 Box box = simulationMap.getBox(entity.getX(), entity.getY());
@@ -482,14 +490,18 @@ public class CommandProcessor {
                 }
             }
         }
+        // Pentru water, calculam varsta (timpul curent - timpul la care a fost scanata)
+        // pentru a determina cand face actiuniile
         for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isWater()) {
                 Water water = (Water) entity;
                 Box box = simulationMap.getBox(entity.getX(), entity.getY());
                 int age = Main.timestamp - water.getScannedTimestamp();
+                // Face planta sa creasca la fiecare iteratie
                 if (box.getPlant() != null && box.getWater().isScanned()) {
                     box.getPlant().grow();
                 }
+                // Odata la 2 iteratii modifica humidity si waterRetention
                 if (age % 2 == 0) {
                     Air air = box.getAir();
                     double newHumidity = air.getHumidity() + POINT_ONE;
@@ -501,7 +513,8 @@ public class CommandProcessor {
                 }
             }
         }
-
+        // Pentru animale, calculeaza varsta, verifica daca acesta este dead
+        // si odata la 2 iteratii muta animalul
         for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isAnimal()) {
                 Animal animal = (Animal) entity;
@@ -519,31 +532,32 @@ public class CommandProcessor {
         }
     }
     /**
-     * todo
-     * comentriu
+     * Invatam un fac despre o entitate scanata
      */
     public ObjectNode learnFact(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
         }
+        // Verificam daca mai avem baterie ramasa
         if (terraBot.getEnergy() < 2) {
             String out = "ERROR: Not enough battery left. Cannot perform action";
             return createNode(commandInput.getCommand(), out);
         }
+        // Verificam daca este scanata entitatea despre care dorim sa invatam un fact
         String scannedEntityName = commandInput.getComponents();
         if (!terraBot.hasEntityScanned(scannedEntityName)) {
             String out = "ERROR: Subject not yet saved. Cannot perform action";
             return createNode(commandInput.getCommand(), out);
         }
+        // Adaugam fact-ul si setam noua baterie ramasa
         terraBot.addFact(scannedEntityName, commandInput.getSubject());
         terraBot.setEnergy(terraBot.getEnergy() - 2);
         String out = "The fact has been successfully saved in the database.";
         return createNode(commandInput.getCommand(), out);
     }
     /**
-     * todo
-     * comentriu
+     * Printam toate fact-urile pe care le-am invatat pentru toate entitatiile scanate
      */
     public ObjectNode printKnowledgeBase(final CommandInput commandInput) {
         if (!simulationStarted) {
@@ -573,39 +587,39 @@ public class CommandProcessor {
         return objectNode;
     }
     /**
-     * todo
-     * comentriu
+     * Functie pentru improveEnv
      */
     private ObjectNode improveEnvironment(final CommandInput commandInput) {
         ObjectNode error = checkStartAndCharge(commandInput.getCommand());
         if (error != null) {
             return error;
         }
+        // Verificam nivelul bateriei
         if (terraBot.getEnergy() < TEN) {
             String out = "ERROR: Not enough battery left. Cannot perform action";
             return createNode(commandInput.getCommand(), out);
         }
-
+        // Determinam ce tip de improve vom face
         String entityName = commandInput.getName();
         String improvementType = commandInput.getImprovementType();
-
+        // Luam entitatea din inventar
         Entity entity = terraBot.getEntityFromInventory(entityName);
 
         if (entity == null) {
             String out = "ERROR: Subject not yet saved. Cannot perform action";
             return createNode(commandInput.getCommand(), out);
         }
-
+        // Verifica, daca avem fact-uri despre aceasta
         if (!terraBot.hasFactsAbout(entityName)) {
             String out = "ERROR: Fact not yet saved. Cannot perform action";
             return createNode(commandInput.getCommand(), out);
         }
-
+        // Modificam nivelul bateriei, o scoatem din invetar
         terraBot.setEnergy(terraBot.getEnergy() - TEN);
         terraBot.removeFromInventory(entityName);
 
         Box box = simulationMap.getBox(terraBot.getX(),  terraBot.getY());
-
+        // Facem improve pe box-ul unde se afla robotul
         String outputMessage = entity.improveEnvironment(box, improvementType);
         return  createNode(commandInput.getCommand(), outputMessage);
     }

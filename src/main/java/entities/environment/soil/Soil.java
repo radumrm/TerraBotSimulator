@@ -24,23 +24,19 @@ public abstract class Soil extends Entity {
         this.organicMatter = input.getOrganicMatter();
     }
     /**
-     * todo
-     * comentriu
+     * Intoarce soilQuality in functie de tipul solului
      */
     public abstract double getSoilQuality();
     /**
-     * todo
-     * comentriu
+     * Calculeaza posibilitatea de a ramane blocat in soil in functie de tipul solului
      */
     public abstract double possibilityToGetStuckInSoil();
     /**
-     * todo
-     * comentriu
+     * Functie pentru afisarea variabilei specifice tipului de soil
      */
     public abstract void addSpecificFieldsToNode(ObjectNode objectNode);
     /**
-     * todo
-     * comentriu
+     * Adaugam organic matter
      */
     public void addOrganicMatter(final double ammount) {
         this.organicMatter += ammount;
