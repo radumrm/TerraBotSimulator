@@ -401,6 +401,8 @@ public class CommandProcessor {
                             typeFound = true;
                         }
                         break;
+                    default:
+                        break;
                 }
             }
         }
@@ -463,6 +465,8 @@ public class CommandProcessor {
                     return createNode(commandInput.getCommand(), "The scanned object is water.");
                 }
                 break;
+            default:
+                return null;
         }
         // Daca s-a ajuns aici, obiectul pe care l-am scanat nu se afla defapt pe patratica
         String out = "ERROR: Object not found. Cannot perform action";
@@ -514,7 +518,7 @@ public class CommandProcessor {
             }
         }
         // Pentru animale, calculeaza varsta, verifica daca acesta este dead
-        // si odata la 2 iteratii muta animalul
+        // si odata la 2 iteratii animalul manaca si se muta
         for (Entity entity : terraBot.getScannedEntities()) {
             if (entity.isAnimal()) {
                 Animal animal = (Animal) entity;
@@ -525,6 +529,7 @@ public class CommandProcessor {
 
                 int age =  Main.timestamp - animal.getScannedTimestamp();
                 if (age % 2 == 0) {
+                    animal.eat(simulationMap.getBox(animal.getX(), animal.getY()));
                     animal.move(simulationMap, terraBot);
                     simulationMap.getBox(animal.getX(), animal.getY()).setAnimal(animal);
                 }
