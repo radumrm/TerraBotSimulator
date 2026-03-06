@@ -6,6 +6,7 @@ Aceasta tema implementeaza o simulare a unui ecosistem autonom gestionat de
 un robot numit TerraBot. Programul simuleaza interactiuniile dinamnice intre
 diverse entitati intre ele si interactiuniile dintre robot si entitati pe baza
 unei harti si a comenziilor date robotului
+Enunt complet: https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/2025/8e211bfe-f6eb-467c-9e54-f8e6df4c1535/tema-1
 
 # PACHETE
 ___________________________
