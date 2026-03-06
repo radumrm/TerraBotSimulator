@@ -1,4 +1,4 @@
-Tema1 323CA Marincea Radu-Mihail
+Marincea Radu-Mihail
 
 # OVERVIEW
 ___________________________
